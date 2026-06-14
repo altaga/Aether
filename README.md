@@ -81,13 +81,18 @@ Under the hood, it rigidly adheres to the x402 v2 architecture:
 4. **The Settlement**: The dual-signed transaction is packaged by the client into an `x402-payment-payload` header and submitted back to the Gateway. The Gateway's `ExactSuiServerScheme` unpacks and verifies the payload, settling the funds on-chain before granting physical access.
 
 ```mermaid
-graph LR
-    Agent[🤖 AI Agent / DApp] -->|1. Request Resource| Server[x402ResourceServer]
-    Server -.->|2. 402 Challenge| Client[x402Client / ExactSuiDappScheme]
-    Client -->|3. Build PTB| Facil[x402Facilitator]
-    Facil -.->|4. Co-Sign Gas| Client
-    Client -->|5. x402-payment-payload header| Server
-    Server -->|6. Verify + Settle On-Chain| Sui[⛓️ Sui Mainnet]
+sequenceDiagram
+    participant Client as 🤖 Agent / DApp
+    participant SDK as 📦 x402 SDK
+    participant Facil as ⛽ Facilitator
+    participant Server as 🛡️ Gateway Server
+
+    Client->>Server: 1. Request hardware access
+    Server-->>SDK: 2. Return 402 Payment Challenge
+    SDK->>Facil: 3. Request Gas Sponsorship (PTB)
+    Facil-->>SDK: 4. Return dual-signed transaction
+    SDK->>Server: 5. Submit x402-payment-payload
+    Server->>Server: 6. Verify & Settle on Sui
 ```
 
 To make it incredibly easy for anyone to implement this package, we have provided pure Node.js boilerplate examples mapping out this precise flow in the `aether-x402-examples/` directory.
