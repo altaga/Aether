@@ -77,7 +77,7 @@ We built `@altaga/x402-sui` as a **custom implementation by our team for the com
 Under the hood, it rigidly adheres to the x402 v2 architecture:
 1. **The Challenge**: When an Agent requests a resource (e.g., `POST /aether/hire`), the **`x402ResourceServer`** rejects the unauthenticated request with an HTTP `402 Payment Required` status, attaching an `x402-payment-requirement` payload detailing the cost.
 2. **The Scheme Mapping**: The **`x402Client`** (or `ExactSuiDappScheme` for browser wallets) intercepts this challenge and constructs the necessary PTB logic to fulfill the exact payment constraint.
-3. **The Facilitator Sponsorship**: For x402 to be frictionless, **it must be gas-sponsored**. The Agent/DApp passes the unsigned PTB to the **`aether-sui-facilitator`** service. Using the `ExactSuiFacilitatorScheme`, this service verifies the intent and co-signs the transaction to cover network gas fees.
+3. **The Facilitator Sponsorship**: For x402 to be frictionless, **it must be gas-sponsored**. The Agent/DApp passes the unsigned PTB to the **[`aether-sui-facilitator`](aether-sui-facilitator)** service. Using the `ExactSuiFacilitatorScheme`, this service verifies the intent and co-signs the transaction to cover network gas fees.
 4. **The Settlement**: The dual-signed transaction is packaged by the client into an `x402-payment-payload` header and submitted back to the Gateway. The Gateway's `ExactSuiServerScheme` unpacks and verifies the payload, settling the funds on-chain before granting physical access.
 
 ```mermaid
@@ -98,11 +98,11 @@ sequenceDiagram
 ---
 
 **Live Production Facilitator (Testnet):**
-- **Sponsor Endpoint:** `POST https://sui.hackathon.dpdns.org/sponsor` (Returns co-signed PTB)
-- **Settle Endpoint:** `POST https://sui.hackathon.dpdns.org/settle` (Executes on-chain settlement)
+- **Sponsor Endpoint:** `POST` [`https://sui.hackathon.dpdns.org/sponsor`](https://sui.hackathon.dpdns.org/sponsor) (Returns co-signed PTB)
+- **Settle Endpoint:** `POST` [`https://sui.hackathon.dpdns.org/settle`](https://sui.hackathon.dpdns.org/settle) (Executes on-chain settlement)
 - **Health Check:** `GET` [`https://sui.hackathon.dpdns.org/health`](https://sui.hackathon.dpdns.org/health)
 
-To make it incredibly easy for anyone to implement this package, we have provided pure Node.js boilerplate examples mapping out this precise flow in the `aether-x402-examples/` directory.
+To make it incredibly easy for anyone to implement this package, we have provided pure Node.js boilerplate examples mapping out this precise flow in the [`aether-x402-examples/`](aether-x402-examples) directory.
 
 ```bash
 npm install @altaga/x402-sui
@@ -117,7 +117,7 @@ npm install @altaga/x402-sui
 
 ## 🛡️ 4. The Gateway: The Central Nervous System
 
-The `aether-gateway` is the critical translation layer. It sits between the public internet and the localized MQTT network where the physical robots live.
+The [`aether-gateway`](aether-gateway) is the critical translation layer. It sits between the public internet and the localized MQTT network where the physical robots live.
 
 Agents should never talk to physical hardware directly. IoT devices do not have the compute power to verify complex cryptographic signatures or handle concurrent API traffic.
 
@@ -144,7 +144,7 @@ graph TD
   - [Agentic Integration Guide (`/agentic`)](https://simgate.hackathon.dpdns.org/agentic) — Instructions and payload examples for AI agents
 - **API Routes:**
   - `GET` [`https://simgate.hackathon.dpdns.org/aether/agent-guide.json`](https://simgate.hackathon.dpdns.org/aether/agent-guide.json) — Live LLM-readable device schema
-  - `POST https://simgate.hackathon.dpdns.org/aether/hire` — x402-protected hardware execution endpoint
+  - `POST` [`https://simgate.hackathon.dpdns.org/aether/hire`](https://simgate.hackathon.dpdns.org/aether/hire) — x402-protected hardware execution endpoint
   - `GET` [`https://simgate.hackathon.dpdns.org/aether/health`](https://simgate.hackathon.dpdns.org/aether/health) — Liveness probe
   - `GET` [`https://simgate.hackathon.dpdns.org/aether/status`](https://simgate.hackathon.dpdns.org/aether/status) — Full subsystem snapshot
 
@@ -185,25 +185,37 @@ graph LR
     Gateway --> Jetson
 ```
 
-### 🎮 Device Simulator (For Hardware-Free Testing)
-For judges and developers testing Aether without physical hardware, we provide a fully functional **Device Simulator** that mocks the passive node endpoints, generating real-time telemetry (temperature, sound dB, LEDs) and responding to MQTT commands identically to real edge devices.
+## 🎮 6. Hardware-Free Testing: The Aether Simulators
 
-### 🌐 Live Simulators
-> **Both simulators are Expo applications deployed via EAS on Sui Testnet.**
-> Open both tabs simultaneously to test the full Agentic loop without any physical hardware.
+We understand that reviewing a decentralized hardware project remotely can be difficult. To ensure that judges and developers can experience the complete Aether ecosystem without needing physical robotics, we built a twin set of fully functional **production-grade simulators**.
 
-| Simulator | URL | Role |
+These simulators are deeply integrated with the live Gateway and communicate over the exact same MQTT and x402 pipelines as real physical devices.
+
+### 🌐 The Live Simulator Suite
+> **Deployed on Sui Testnet via Expo EAS**
+> To test the complete Agentic loop, open both of the following simulators in separate browser windows side-by-side.
+
+| Simulator App | Production URL | Core Functionality |
 |---|---|---|
-| **DApp Simulator** | [aether-dapp-simulator.expo.app](https://aether-dapp-simulator.expo.app/) | AI Control Center — Direct Control + Agent chat |
-| **Devices Simulator** | [aether-devices-simulator.expo.app](https://aether-devices-simulator.expo.app/) | Hardware Emulator — receives MQTT commands, returns receipts |
+| **DApp Simulator** | [aether-dapp-simulator.expo.app](https://aether-dapp-simulator.expo.app/) | The primary user interface. Includes the **Direct Control Panel** for manual execution, and the **AI Control Center** for autonomous AWS Bedrock agent interactions. |
+| **Devices Simulator** | [aether-devices-simulator.expo.app](https://aether-devices-simulator.expo.app/) | The hardware twin. Mocks physical passive nodes, generates real-time telemetry (Temperature, Sound dB), actuates digital LEDs, and returns verifiable execution receipts to the Gateway. |
 
-📖 **[Read the full simulator usage guide → SIMULATORS.md](./SIMULATORS.md)**
+### How It Works
+1. Connect your Sui wallet (we recommend **Slush Wallet**) to the **DApp Simulator**.
+2. Keep the **Devices Simulator** open on screen so it stays connected to the Gateway's MQTT broker.
+3. Use the DApp to trigger a command (e.g., "Turn on the LED" or "Read the sound sensor").
+4. The DApp will negotiate the x402 payment, the Facilitator will sponsor the gas, and the Gateway will fire the MQTT event.
+5. You will see the **Devices Simulator** react instantly, turning on its UI lights and returning a verifiable receipt!
 
-![Device Emulator](images/emulator1.png)
+📖 **[Read the comprehensive Simulator Setup & Testing Guide → SIMULATORS.md](./SIMULATORS.md)**
+
+<div align="center">
+  <img src="images/emulator1.png" alt="Device Emulator Dashboard" width="80%"/>
+</div>
 
 ---
 
-## 🗃️ 6. Walrus Integration: Immutable Decentralized Receipts
+## 🗃️ 7. Walrus Integration: Immutable Decentralized Receipts
 
 When a robot moves, data is generated. If a user pays 0.1 USDC to have a sensor log data, that data must be stored verifiably.
 
@@ -231,7 +243,7 @@ sequenceDiagram
 
 ---
 
-## 💻 7. Interfaces: Humans and Agents Alike
+## 💻 8. Interfaces: Humans and Agents Alike
 
 ### 🎛️ Direct Control Interface
 Manual hardware control panel. Connects your Sui wallet and triggers x402 payments directly from the browser.
@@ -276,7 +288,7 @@ graph LR
 
 ---
 
-## 🔮 8. Conclusion & Future Possibilities
+## 🔮 9. Conclusion & Future Possibilities
 
 Aether proves that a decentralized, secure, and economically viable Machine-to-Machine network is possible today. By utilizing Sui's high-throughput architecture and the x402 protocol, we have removed the friction of legacy financial rails from robotics.
 
@@ -317,34 +329,37 @@ npm install @altaga/x402-sui
 
 ---
 
-### B. `aether-gateway` (The x402 Barrier & Router)
+### B. [`aether-gateway`](aether-gateway) (The x402 Barrier & Router)
 Node.js + Express service. The x402 enforcement layer and MQTT protocol bridge.
 
-- **`src/index.js`**: Main entry point. Boots the HTTP server, MQTT broker, Walrus publisher, and Sui event listener.
-- **`src/app.js`**: Express app factory — registers all x402 routes.
-- **`src/services/settings/settings.js`**: Loads and validates `config/devices.json` at startup.
-- **`src/services/x402/routes.js`**: Exposes `POST /aether/hire` (x402 barrier) and `GET /aether/agent-guide.json` (dynamic schema).
-- **`src/services/dispatch/dispatcher.js`**: Execution engine — publishes MQTT commands and waits for hardware receipts with timeout handling.
-- **`src/services/mqtt/broker.js`**: Manages the MQTT WebSocket connection and inbound telemetry routing.
-- **`src/services/walrus/publisher.js`**: Uploads MQTT receipts to Walrus in parallel with HTTP responses.
-- **`src/services/sui/listener.js`**: Listens to on-chain Sui events and dispatches MQTT commands from blockchain triggers.
-- **`config/devices.json`**: Zero-config device registry. Add a new device here and it is immediately available via `agent-guide.json`.
+- **[`src/index.js`](aether-gateway/src/index.js)**: Main entry point. Boots the HTTP server, MQTT broker, Walrus publisher, and Sui event listener.
+- **[`src/app.js`](aether-gateway/src/app.js)**: Express app factory — registers all x402 routes.
+- **[`src/services/settings/settings.js`](aether-gateway/src/services/settings/settings.js)**: Loads and validates [`config/devices.json`](aether-gateway/config/devices.json) at startup.
+- **[`src/services/x402/routes.js`](aether-gateway/src/services/x402/routes.js)**: Exposes `POST /aether/hire` (x402 barrier) and `GET /aether/agent-guide.json` (dynamic schema).
+- **[`src/services/dispatch/dispatcher.js`](aether-gateway/src/services/dispatch/dispatcher.js)**: Execution engine — publishes MQTT commands and waits for hardware receipts with timeout handling.
+- **[`src/services/mqtt/broker.js`](aether-gateway/src/services/mqtt/broker.js)**: Manages the MQTT WebSocket connection and inbound telemetry routing.
+- **[`src/services/walrus/publisher.js`](aether-gateway/src/services/walrus/publisher.js)**: Uploads MQTT receipts to Walrus in parallel with HTTP responses.
+- **[`src/services/sui/listener.js`](aether-gateway/src/services/sui/listener.js)**: Listens to on-chain Sui events and dispatches MQTT commands from blockchain triggers.
+
+**Device Registry ([`config/devices.json`](aether-gateway/config/devices.json)):**
+
+All connected devices are defined in [`config/devices.json`](aether-gateway/config/devices.json). Each device entry specifies its `id`, `type` (`PASSIVE` or `ACTIVE`), USDC `price` per call, and its list of `capabilities` (commands). The Gateway auto-generates the `agent-guide.json` from this file dynamically at runtime.
 
 ---
 
-### C. `aether-dapp` (The Production Orchestrator UI)
+### C. [`aether-dapp`](aether-dapp) (The Production Orchestrator UI)
 Expo (React Native Web) application deployed via EAS. Connects a Sui wallet and orchestrates the full Agentic loop on **Mainnet**.
 
-- **`src/app/api/agent+api.ts`**: AWS Bedrock (Meta Llama 4 Maverick) LLM orchestration loop. Implements `DISCOVER_SKILLS` dynamic schema injection and multi-turn tool call resolution.
-- **`src/app/index.tsx`**: Main UI. Renders the Direct Control tab and the Agentic chat interface. Integrates `ExactSuiDappScheme` for browser wallet x402 signing.
-- **`src/app/_layout.tsx`**: Provider setup — `SuiClientProvider` (Mainnet), `WalletProvider`, `QueryClientProvider`.
+- **[`src/app/api/agent+api.ts`](aether-dapp/src/app/api/agent+api.ts)**: AWS Bedrock (Meta Llama 4 Maverick) LLM orchestration loop. Implements `DISCOVER_SKILLS` dynamic schema injection and multi-turn tool call resolution.
+- **[`src/app/index.tsx`](aether-dapp/src/app/index.tsx)**: Main UI. Renders the Direct Control tab and the Agentic chat interface. Integrates `ExactSuiDappScheme` for browser wallet x402 signing.
+- **[`src/app/_layout.tsx`](aether-dapp/src/app/_layout.tsx)**: Provider setup — `SuiClientProvider` (Mainnet), `WalletProvider`, `QueryClientProvider`.
 
 ---
 
-### D. `aether-sui-facilitator` (The Gas Station)
+### D. [`aether-sui-facilitator`](aether-sui-facilitator) (The Gas Station)
 Minimal Node.js + Express microservice. Acts as the gas station for sponsored Sui transactions on **Mainnet**.
 
-- **`index.mjs`**: Exposes three endpoints:
+- **[`index.mjs`](aether-sui-facilitator/index.mjs)**: Exposes three endpoints:
   - `POST /sponsor` — Builds and co-signs the PTB with the facilitator keypair.
   - `POST /verify` — Validates a submitted payment payload.
   - `POST /settle` — Executes the final on-chain settlement.
@@ -360,21 +375,21 @@ npm start
 
 ---
 
-### E. `aether-devices` (The Physical Edge)
+### E. [`aether-devices`](aether-devices) (The Physical Edge)
 
-#### Passive Node (`aether-passive-node/`)
+#### Passive Node ([`aether-passive-node/`](aether-devices/aether-passive-node))
 Arduino/C++ firmware for M5Stack or ESP32 devices.
 
-- **`Aether_Passive_Node.ino`**: Main sketch. Connects to MQTT and routes incoming commands to hardware actuators.
-- **`MQTTManager.h`**: Handles MQTT connection, authentication (JWT), subscription, and reconnection logic.
-- **`AetherNode.h`**: Command router — maps MQTT command strings to physical hardware actions (LEDs, buzzer, IMU reads, etc.).
-- **`AetherOS.h`**: Device operating system abstraction — hardware initialization and pin management.
-- **`creds.h`**: WiFi and MQTT credentials (**excluded from repo** via `.gitignore`).
+- **[`Aether_Passive_Node.ino`](aether-devices/aether-passive-node/Aether_Passive_Node.ino)**: Main sketch. Connects to MQTT and routes incoming commands to hardware actuators.
+- **[`MQTTManager.h`](aether-devices/aether-passive-node/MQTTManager.h)**: Handles MQTT connection, authentication (JWT), subscription, and reconnection logic.
+- **[`AetherNode.h`](aether-devices/aether-passive-node/AetherNode.h)**: Command router — maps MQTT command strings to physical hardware actions (LEDs, buzzer, IMU reads, etc.).
+- **[`AetherOS.h`](aether-devices/aether-passive-node/AetherOS.h)**: Device operating system abstraction — hardware initialization and pin management.
+- **[`creds.h`](aether-devices/aether-passive-node/creds.h)**: WiFi and MQTT credentials (**excluded from repo** via `.gitignore`).
 
-#### Active Node (`aether-active-node/`)
+#### Active Node ([`aether-active-node/`](aether-devices/aether-active-node))
 Node.js daemon for Jetson Nano or any Linux device with a local Ollama instance.
 
-- **`index.js`**: Connects to MQTT, subscribes to `aether/active/{DEVICE_ID}/intent`, forwards prompts to local Ollama (`qwen2.5-coder:7b`), and publishes results to `aether/active/{DEVICE_ID}/receipt`.
+- **[`index.js`](aether-devices/aether-active-node/index.js)**: Connects to MQTT, subscribes to `aether/active/{DEVICE_ID}/intent`, forwards prompts to local Ollama (`qwen2.5-coder:7b`), and publishes results to `aether/active/{DEVICE_ID}/receipt`.
 
 Setup:
 ```bash
@@ -387,19 +402,19 @@ node index.js
 
 ---
 
-### F. `aether-ws` (MQTT WebSocket Broker)
+### F. [`aether-ws`](aether-ws) (MQTT WebSocket Broker)
 A custom WebSocket-to-MQTT bridge built with `ws` and `mqtt-packet`. Acts as the lightweight MQTT broker layer for the gateway when running locally, supporting JWT-authenticated client connections.
 
-- **`index.js`**: Main broker — validates JWT tokens, routes MQTT packets between clients, and manages pub/sub state.
+- **[`index.js`](aether-ws/index.js)**: Main broker — validates JWT tokens, routes MQTT packets between clients, and manages pub/sub state.
 
 ---
 
-### G. `aether-x402-examples` (Standalone Node.js Testing)
+### G. [`aether-x402-examples`](aether-x402-examples) (Standalone Node.js Testing)
 Pure Node.js boilerplate scripts for testing the x402 payment flow without any UI or Expo dependency.
 
-- **`Buyer/index.mjs`**: Simulates an Agent (`x402HTTPClient`) hitting an x402-protected seller endpoint. Reads `BUYER_SECRET` from `.env`.
-- **`Facilitator/index.mjs`**: Runs a local Facilitator Gas Station on port `8085`. Reads `FACILITATOR_PRIVATE_KEY` from `.env`.
-- **`Seller/index.mjs`**: Runs a minimal x402-protected Express server on port `4021` that returns `premium-data` after a verified payment.
+- **[`Buyer/index.mjs`](aether-x402-examples/Buyer/index.mjs)**: Simulates an Agent (`x402HTTPClient`) hitting an x402-protected seller endpoint. Reads `BUYER_SECRET` from `.env`.
+- **[`Facilitator/index.mjs`](aether-x402-examples/Facilitator/index.mjs)**: Runs a local Facilitator Gas Station on port `8085`. Reads `FACILITATOR_PRIVATE_KEY` from `.env`.
+- **[`Seller/index.mjs`](aether-x402-examples/Seller/index.mjs)**: Runs a minimal x402-protected Express server on port `4021` that returns `premium-data` after a verified payment.
 
 Setup:
 ```bash
@@ -422,16 +437,16 @@ All Testnet services are **deployed and live**. Open these URLs directly in your
 
 | Endpoint | Link | Returns |
 |---|---|---|
-| Health | [/aether/health](https://simgate.hackathon.dpdns.org/aether/health) | `{ok, gateway_address, uptime}` |
-| Status | [/aether/status](https://simgate.hackathon.dpdns.org/aether/status) | Broker state, supervised device count, in-flight requests |
-| Agent Guide | [/aether/agent-guide.json](https://simgate.hackathon.dpdns.org/aether/agent-guide.json) | Full live LLM-readable device schema (hardware targets, commands, pricing) |
+| Health | `GET` [/aether/health](https://simgate.hackathon.dpdns.org/aether/health) | `{ok, gateway_address, uptime}` |
+| Status | `GET` [/aether/status](https://simgate.hackathon.dpdns.org/aether/status) | Broker state, supervised device count, in-flight requests |
+| Agent Guide | `GET` [/aether/agent-guide.json](https://simgate.hackathon.dpdns.org/aether/agent-guide.json) | Full live LLM-readable device schema (hardware targets, commands, pricing) |
 
 ### ⛽ Sui Facilitator — `sui.hackathon.dpdns.org`
 
 | Endpoint | Link | Returns |
 |---|---|---|
-| Health | [/health](https://sui.hackathon.dpdns.org/health) | `{"status":"ok"}` |
-| Sponsor | `POST /sponsor` | Co-signed PTB (called automatically by DApp) |
-| Settle | `POST /settle` | On-chain Testnet settlement (called automatically by DApp) |
+| Health | `GET` [/health](https://sui.hackathon.dpdns.org/health) | `{"status":"ok"}` |
+| Sponsor | `POST` [/sponsor](https://sui.hackathon.dpdns.org/sponsor) | Co-signed PTB (called automatically by DApp) |
+| Settle | `POST` [/settle](https://sui.hackathon.dpdns.org/settle) | On-chain Testnet settlement (called automatically by DApp) |
 
 📖 **[Full endpoint documentation with example responses → SIMULATORS.md](./SIMULATORS.md)**
