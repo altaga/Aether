@@ -97,21 +97,12 @@ This application acts as your **virtual hardware rack**. It connects to the Aeth
 
 ### Header Bar
 
-At the very top you will see:
-- **`AETHER SYSTEM NODE SIMULATOR`** — the system label
-- **`Global Bus Simulator`** — main title, with the **`[x402 BRIDGE]`** and **`[AETHER GATEWAY NODE]`** status badges
-- Three **status dots** with labels: `ESP32 Online`, `Robotic Arm Online`, `Jetson Nano Online`, followed by the MQTT broker URL (`wss://mqtt.hackathon.dpdns.org:443`)
-
-**Status dot colors:**
-- 🟢 **Green** — Connected to the MQTT broker and ready to receive commands
-- 🟡 **Amber** — Connecting…
-- 🔴 **Red** — Disconnected (refresh the page)
-
-All three nodes should turn **green** within 3–5 seconds of loading the page.
+![Aether Devices Header](images/header.png)
+*Above: The streamlined global header featuring the Walrus Archive panel and Telemetry controls.*
 
 **Top-center — Walrus Testnet Archive panel:** Initially shows `AWAITING WALRUS TELEMETRY...`. After any successful command, it populates with:
 - **`NODE`**: The device ID that executed the command (e.g. `Sub_B8023212CFA3`)
-- **`BLOB`**: The full Walrus Blob ID — the immutable receipt hash
+- **`BLOB`**: The full Walrus Blob ID — the immutable receipt hash (click to open in explorer)
 - **`TIME`**: The timestamp of when the receipt was archived
 
 **Top-right — `OPEN TELEMETRY` button:** Click to open a sliding drawer with all raw MQTT events in real time (subscriptions, publishes, receipts, Walrus uploads, errors).
@@ -120,26 +111,13 @@ All three nodes should turn **green** within 3–5 seconds of loading the page.
 
 ### The Three Device Cards
 
+![Aether Device Cards](images/cards.png)
+*Above: The three primary simulated node interfaces: Passive ESP32 (Left), 4DOF Robotic Arm (Center), and Active Jetson Nano (Right).*
+
 #### 🟡 Left Card — Passive Device (ESP32 Mock)
 **Node ID:** `Sub_B8023212CFA3`
 
-This card simulates an **M5Stack ESP32 IoT sensor node**. It features a pixel-art M5Stack device display showing live simulated readings:
-
-```
-┌─────────────────────────────────────┐
-│ AETHER    B8023212CFA3      ONLINE  │
-│ SENSOR    NETWORK     PWR           │
-│  TEMP     MQTT-RES    ESP386        │
-│           •WiFi OK    99%           │
-│ C  24.0   •NSS  OK    4.093 V       │
-│                                     │
-│ SENSOR    RELAY       SYSTEM STATUS │
-│  SoundB   LED PIN 13                │
-│ dB  45    STATE LOW   UP -60 dBm    │
-│                       Up 0:33       │
-│                       HE166 KB      │
-└─────────────────────────────────────┘
-```
+This card simulates an **M5Stack ESP32 IoT sensor node**. It features a digital readout display showing live simulated network and sensor metrics.
 
 Below the device display, two interactive sliders let you manually set what the sensor will report when queried:
 - **Temperature Sensor** — drag to set value (e.g. `24.0 °C`)
@@ -169,16 +147,7 @@ Below the 3D view you will find:
 This card simulates a **Jetson Nano AI edge node**. The card description reads:
 > *"A hardware node powered by a local Large Language Model. It understands natural language, reasons autonomously, and crafts intelligent responses — no fixed script, just real-time AI thinking."*
 
-The card displays a **live system terminal** showing simulated hardware metrics:
-```
-● LIVE  monitoring aether/active/Sub_C0C1CE79B23D/intent
-
-[████████████████]... CPU: 85%   HMP: 72°C
-[████████████████]... GPU: 85%   MEM: 6.4/8GB
-[|||.............]... DSK: 15%   SWP: 0.1/4GB
-
-SYS: ALLOCATING TENSORS FOR LOCAL INFERENCE
-```
+The card displays a **live system terminal** showing dynamically animated hardware metrics (CPU, GPU, MEM, and TEMP). When the AI receives a prompt, these vitals visually spike into the amber and red zones, accompanied by an alert stating `SYS: ALLOCATING TENSORS FOR LOCAL INFERENCE`. When inactive, the vitals cool down and the system returns to `SYS: IDLE / STANDBY`.
 
 Below the terminal there is a **chat panel** that starts with `Waiting for Gateway intent...`. When the DApp Agent sends a prompt to this node, the prompt and AI response appear here in real time — showing you exactly what the Jetson would process if it were real hardware.
 
@@ -192,6 +161,9 @@ Click **`OPEN TELEMETRY`** in the top-right to open a full-width sliding drawer.
 - Incoming action commands from the DApp
 - Outgoing receipt publishes back to the gateway
 - Walrus archive confirmations with `blobId`
+
+![Telemetry RPC Log](images/telemetry1.png)
+*Above: The real-time Telemetry & RPC log drawer sliding over the simulator dashboard, offering full visibility into the MQTT message lifecycle.*
 
 ---
 
@@ -300,9 +272,9 @@ Fully autonomous AI orchestration. Instead of manually picking commands, you des
 
 ---
 
-## 📋 Complete Transaction Flow (What Happens Under the Hood)
+## 📋 The Complete Transaction Lifecycle
 
-When you click any action button or the agent emits a tool call, this is the exact sequence:
+When you trigger a manual action or the AI agent orchestrates a tool call, the following end-to-end lifecycle executes. Thanks to Sui's sub-second finality and the Aether Gateway's automated x402 negotiation, this entire process occurs autonomously within **2 to 4 seconds**, requiring zero human intervention:
 
 ```
 1.  DApp builds the petition payload:
@@ -349,23 +321,25 @@ When you click any action button or the agent emits a tool call, this is the exa
 
 ## 🔍 Verifying Your Transactions
 
-Every successful command produces two verifiable on-chain artifacts:
+Every successful hardware command instantly generates a toast notification containing direct links to two verifiable on-chain artifacts.
 
-### SUI Scan (Testnet)
-Click **"View on SUI Explorer"** in the success toast, or navigate to:
-```
+![Transaction Confirmed Toast](images/rec.png)
+*Above: The success toast generated by the DApp Simulator upon a completed hardware actuation.*
+
+### 1. SUI Scan (Testnet)
+Click **"View on SUI Explorer"** in the toast to view the full on-chain record of the x402 USDC micro-transaction transferred from your wallet to the Aether Gateway. You can also manually navigate to:
+```text
 https://suiscan.xyz/testnet/tx/{your_transaction_hash}
 ```
 
-You will see the full on-chain record of the USDC transfer from your wallet to the gateway.
+### 2. Walrus Testnet Explorer
+Click **"Open Walrus Explorer"** in the toast to view the raw JSON telemetry receipt generated by the hardware. This data is permanently anchored to the Walrus decentralized storage network.
 
-### Walrus Testnet Explorer
-Click **"Open Walrus Explorer"** in the success toast, or navigate to:
-```
-https://aggregator.walrus-testnet.walrus.space/v1/blobs/{blob_id}
-```
+![Walrus Simulator Integration](images/walrus1.png)
+*Above: The hardware simulator receives the Blob ID confirmation from the Gateway in real-time.*
 
-You will see the raw JSON telemetry receipt from the hardware, stored permanently on the Walrus decentralized storage network.
+![Walrus Explorer View](images/walrus2.png)
+*Above: The Walrus Explorer displays the immutable JSON receipt payload.*
 
 ---
 
