@@ -34,7 +34,7 @@ Why haven't we automated this yet? Because giving an AI agent direct, unfettered
 3. **Accountability**: If an AI agent actuates a machine, where is the immutable, cryptographically secure proof that the action was requested and executed?
 
 <div align="center">
-  <img src="images/rent_a_human.png" alt="The Rent a Human Problem" width="80%"/>
+  <img src="images/rent_a_human.png" alt="The Rent a Human Problem" width="60%"/>
 </div>
 <div align="center">
   <i>*Fig 1. The "Rent a Human" bottleneck in physical AI execution.*</i>
@@ -268,7 +268,7 @@ sequenceDiagram
 ---
 
 <div align="center">
-  <img src="images/walrus1.png" alt="Walrus Simulator Integration" width="80%"/>
+  <img src="images/walrus1.png" alt="Walrus Simulator Integration" width="60%"/>
 </div>
 <div align="center">
   <i>*Fig 4. The Global Bus Simulator immediately displays the Walrus Blob ID upon successful hardware execution.*</i>
@@ -289,7 +289,7 @@ sequenceDiagram
 Manual hardware control panel. Connects your Sui wallet and triggers x402 payments directly from the browser.
 
 <div align="center">
-  <img src="images/ui1.png" alt="Direct Control" width="80%"/>
+  <img src="images/ui1.png" alt="Direct Control" width="30%"/>
 </div>
 <div align="center">
   <i>*Fig 6. Direct Control Panel for manual hardware execution.*</i>
@@ -299,7 +299,7 @@ Manual hardware control panel. Connects your Sui wallet and triggers x402 paymen
 Chat interface powered by **AWS Bedrock (Meta Llama 4 Maverick)**. The agent autonomously discovers the live device schema via `DISCOVER_SKILLS`, then orchestrates multi-step hardware commands.
 
 <div align="center">
-  <img src="images/ui2.png" alt="Agentic Control" width="80%"/>
+  <img src="images/ui2.png" alt="Agentic Control" width="30%"/>
 </div>
 <div align="center">
   <i>*Fig 7. Agentic Control Center for autonomous AI hardware orchestration.*</i>
@@ -309,7 +309,7 @@ Chat interface powered by **AWS Bedrock (Meta Llama 4 Maverick)**. The agent aut
 When a hardware command is triggered (either manually or agentically), the `ExactSuiDappScheme` intercepts the `402 Payment Required` response and prompts the connected Sui wallet to sign and co-settle the transaction.
 
 <div align="center">
-  <img src="images/ui3.png" alt="Wallet Interaction" width="80%"/>
+  <img src="images/ui3.png" alt="Wallet Interaction" width="30%"/>
 </div>
 <div align="center">
   <i>*Fig 8. Wallet interaction prompt for x402 transaction settlement.*</i>
@@ -319,7 +319,7 @@ When a hardware command is triggered (either manually or agentically), the `Exac
 Aether provides full transparency into the underlying protocol layer. The sliding telemetry drawer exposes all real-time MQTT heartbeats, subscriptions, and x402 receipt payloads directly in the browser.
 
 <div align="center">
-  <img src="images/telemetry1.png" alt="Telemetry RPC Log" width="80%"/>
+  <img src="images/telemetry1.png" alt="Telemetry RPC Log" width="60%"/>
 </div>
 <div align="center">
   <i>*Fig 9. Real-time observability of MQTT hardware events and gateway communications.*</i>
