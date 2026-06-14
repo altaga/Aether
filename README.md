@@ -15,7 +15,6 @@
 - 📖 **If you're a Human Judge or Developer:** 
   - **Want the full vision and architecture?** Keep reading this `README.md` below!
   - **Want to test it right now?** Read the [**`SIMULATORS.md`**](./SIMULATORS.md) guide to use the live network without hardware.
-  - **Want a technical deep dive?** Read the [**`AGENT.md`**](./AGENT.md) manifesto for a complete breakdown of the architecture, modules, and production endpoints.
 
 ---
 
