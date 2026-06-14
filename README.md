@@ -129,37 +129,17 @@ graph TD
     Broker -->|Pub/Sub| Active[🖥️ Active Nodes]
 ```
 
-### 🚀 Gateway Setup
+---
 
-```bash
-cd aether-gateway
-npm install
-cp .env.example .env   # Fill in your keys
-npm start
-```
-
-**Environment Variables (`.env`):**
-
-| Variable | Description |
-|---|---|
-| `GATEWAY_PRIVATE_KEY` | Sui private key for the gateway wallet |
-| `GATEWAY_ADDRESS` | Sui address matching the private key |
-| `SUI_RPC_URL` | Sui RPC endpoint (Mainnet or Testnet) |
-| `MQTT_BROKER_URL` | WebSocket URL for the MQTT broker |
-| `MQTT_BROKER_JWT` | JWT token for MQTT authentication |
-| `FACILITATOR_URL` | URL of the running `aether-sui-facilitator` |
-| `WALRUS_PUBLISHER_URL` | Walrus storage publisher endpoint |
-| `AETHER_GW_HTTP_PORT` | HTTP port (default: `8086`) |
-
-**Exposed Routes:**
-- `GET /aether/agent-guide.json` — Live LLM-readable device schema
-- `POST /aether/hire` — x402-protected hardware execution endpoint
-- `GET /aether/health` — Liveness probe
-- `GET /aether/status` — Full subsystem snapshot
-
-**Device Registry (`config/devices.json`):**
-
-All connected devices are defined in `config/devices.json`. Each device entry specifies its `id`, `type` (`PASSIVE` or `ACTIVE`), USDC `price` per call, and its list of `capabilities` (commands). The Gateway auto-generates the `agent-guide.json` from this file dynamically at runtime.
+**Live Production Endpoints (Testnet):**
+- **Gateway Web Interfaces:**
+  - [User Test Page (`/user`)](https://simgate.hackathon.dpdns.org/user) — Visual dashboard for human users to get information about the connected devices and its capabilities
+  - [Agentic Integration Guide (`/agentic`)](https://simgate.hackathon.dpdns.org/agentic) — Instructions and payload examples for AI agents
+- **API Routes:**
+  - `GET` [`https://simgate.hackathon.dpdns.org/aether/agent-guide.json`](https://simgate.hackathon.dpdns.org/aether/agent-guide.json) — Live LLM-readable device schema
+  - `POST https://simgate.hackathon.dpdns.org/aether/hire` — x402-protected hardware execution endpoint
+  - `GET` [`https://simgate.hackathon.dpdns.org/aether/health`](https://simgate.hackathon.dpdns.org/aether/health) — Liveness probe
+  - `GET` [`https://simgate.hackathon.dpdns.org/aether/status`](https://simgate.hackathon.dpdns.org/aether/status) — Full subsystem snapshot
 
 ---
 
