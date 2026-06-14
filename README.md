@@ -95,6 +95,11 @@ sequenceDiagram
     Server->>Server: 6. Verify & Settle on Sui
 ```
 
+**Live Production Facilitator (Testnet):**
+- **Sponsor Endpoint:** `POST https://sui.hackathon.dpdns.org/sponsor` (Returns co-signed PTB)
+- **Settle Endpoint:** `POST https://sui.hackathon.dpdns.org/settle` (Executes on-chain settlement)
+- **Health Check:** `GET` [`https://sui.hackathon.dpdns.org/health`](https://sui.hackathon.dpdns.org/health)
+
 To make it incredibly easy for anyone to implement this package, we have provided pure Node.js boilerplate examples mapping out this precise flow in the `aether-x402-examples/` directory.
 
 ```bash
