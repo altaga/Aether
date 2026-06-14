@@ -1,0 +1,13 @@
+{
+  "name": "aether-active-node",
+  "version": "1.0.0",
+  "description": "MQTT over WebSocket client for Jetson Nano mimicking passive Aether devices",
+  "main": "ws_client.js",
+  "scripts": {
+    "start": "node ws_client.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "mqtt": "^5.7.0"
+  }
+}

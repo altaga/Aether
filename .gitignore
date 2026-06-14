@@ -45,6 +45,11 @@ jspm_packages/
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
 
+# Aether — generated test artifacts (funded keypairs, etc.)
+standalone/tmp/
+standalone/agent-wallet.json
+standalone/agent-2-wallet.json
+
 # TypeScript cache
 *.tsbuildinfo
 
@@ -134,3 +139,18 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+wallet.json
+@altaga-x402-sui/scripts/publish.js
+package-lock.json
+.npmignore
+creds.h
+
+*simulator
+@altaga-x402-sui/
+
+# AI and Debug Artifacts
+.claude/
+.dbg/
+CLAUDE.md
+debug-*.md

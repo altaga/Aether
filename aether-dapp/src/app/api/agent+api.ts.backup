@@ -1,0 +1,187 @@
+import { ChatBedrockConverse } from '@langchain/aws';
+import { BedrockRuntimeClient } from '@aws-sdk/client-bedrock-runtime';
+import { HumanMessage, SystemMessage } from '@langchain/core/messages';
+
+type ToolCall = {
+  target_hardware_id: string;
+  command: string[];
+  user_prompt?: string;
+  context?: string;
+};
+
+type AgentResponse = {
+  message: string;
+  tool_calls: ToolCall[];
+};
+
+function safeJsonParse<T>(text: string): T | null {
+  try {
+    return JSON.parse(text) as T;
+  } catch {
+    return null;
+  }
+}
+
+function stripCodeFences(text: string): string {
+  let t = text.trim();
+  if (t.startsWith('```json')) t = t.replace(/```json/g, '').replace(/```/g, '').trim();
+  if (t.startsWith('```')) t = t.replace(/```/g, '').trim();
+  return t;
+}
+
+function normalizeAgentResponse(value: unknown): AgentResponse | null {
+  if (!value || typeof value !== 'object') return null;
+  const v = value as any;
+  if (typeof v.message !== 'string' || !Array.isArray(v.tool_calls)) return null;
+
+  const tool_calls: ToolCall[] = v.tool_calls
+    .map((tc: any) => {
+      const target_hardware_id = typeof tc?.target_hardware_id === 'string' ? tc.target_hardware_id : '';
+      const command = Array.isArray(tc?.command) ? tc.command.map(String) : [];
+      if (!target_hardware_id || command.length === 0) return null;
+      const out: ToolCall = { target_hardware_id, command };
+      if (typeof tc?.user_prompt === 'string') out.user_prompt = tc.user_prompt;
+      if (typeof tc?.context === 'string') out.context = tc.context;
+      return out;
+    })
+    .filter(Boolean) as ToolCall[];
+
+  return { message: v.message, tool_calls };
+}
+
+function extractAgentResponse(text: string): AgentResponse | null {
+  const cleaned = stripCodeFences(text);
+
+  const direct = normalizeAgentResponse(safeJsonParse<unknown>(cleaned) ?? safeJsonParse<unknown>(text));
+  if (direct) return direct;
+
+  const marker = 'Here is the correct response:';
+  const idx = cleaned.indexOf(marker);
+  if (idx >= 0) {
+    const after = cleaned.slice(idx + marker.length).trim();
+    const parsedAfter = extractAgentResponse(after);
+    if (parsedAfter) return parsedAfter;
+  }
+
+  for (let start = cleaned.indexOf('{'); start >= 0; start = cleaned.indexOf('{', start + 1)) {
+    let depth = 0;
+    let inString = false;
+    let escaped = false;
+    for (let i = start; i < cleaned.length; i++) {
+      const ch = cleaned[i];
+      if (inString) {
+        if (escaped) {
+          escaped = false;
+        } else if (ch === '\\') {
+          escaped = true;
+        } else if (ch === '"') {
+          inString = false;
+        }
+      } else {
+        if (ch === '"') inString = true;
+        else if (ch === '{') depth++;
+        else if (ch === '}') {
+          depth--;
+          if (depth === 0) {
+            const candidate = cleaned.slice(start, i + 1);
+            const normalized = normalizeAgentResponse(safeJsonParse<unknown>(candidate));
+            if (normalized) return normalized;
+            break;
+          }
+        }
+      }
+    }
+  }
+
+  return null;
+}
+
+export async function POST(request: Request): Promise<Response> {
+  try {
+    const body = await request.json().catch(() => ({}));
+    const userMessage = String(body.message || body.user_prompt || '').trim();
+
+    if (!userMessage) {
+      return Response.json({ message: 'Missing message.', tool_calls: [] satisfies ToolCall[] }, { status: 400 });
+    }
+
+    const bearerToken = process.env.AMAZON_BEDROCK_BEARER_TOKEN || '';
+
+    const bedrockClient = new BedrockRuntimeClient({
+      region: process.env.AWS_REGION || 'us-east-1',
+      credentials: { accessKeyId: 'dummy', secretAccessKey: 'dummy' },
+    });
+
+    bedrockClient.middlewareStack.add((next) => async (args: any) => {
+      if (args.request.headers) {
+        args.request.headers.authorization = `Bearer ${bearerToken}`;
+        delete args.request.headers.Authorization;
+      }
+      return next(args);
+    }, { step: 'finalizeRequest', name: 'overrideAuth', priority: 'low' });
+
+    const modelId = process.env.BEDROCK_MODEL_ID || 'us.meta.llama4-maverick-17b-instruct-v1:0';
+    const model = new ChatBedrockConverse({
+      model: modelId,
+      region: process.env.AWS_REGION || 'us-east-1',
+      client: bedrockClient,
+      temperature: 0,
+    });
+
+    const systemPrompt =
+      `You are the Aether Orchestrator.\n` +
+      `You can propose one or MORE sequential tool calls. The client will execute them sequentially by signing x402 transactions.\n` +
+      `Write your message in a friendly, human, readable way.\n` +
+      `Return ONLY a JSON object with EXACTLY these keys:\n` +
+      `{"message":"...","tool_calls":[{"target_hardware_id":"...","command":["..."],"user_prompt":"optional","context":"optional"}]}\n` +
+      `No markdown. No extra text. No schema. No wrappers.\n\n` +
+      `If the user requests a compound action or multi-step workflow (e.g. "flash the leds and beep, then reach left with the arm"), you MUST return multiple elements in the "tool_calls" array in the correct chronological sequence.\n\n` +
+      `Available devices and commands:\n` +
+      `- Passive Device (ESP32): target_hardware_id="Sub_0096F8C40A24"\n` +
+      `  - VIBRATE_ALERT: trigger vibration feedback and red LED flash\n` +
+      `  - FLASH_LEDS: flash the side LEDs blue\n` +
+      `  - BEEP: play a tone (frequency 1000 Hz or custom frequency)\n` +
+      `  - READ_BATTERY: read the battery percentage and voltage\n` +
+      `  - READ_IMU: read the accelerometer data and temperature\n` +
+      `  - READ_SOUND: read the sound pressure level in dB\n` +
+      `  - READ_ALL: read all sensor data (battery, IMU, sound) at once\n` +
+      `- Robotic Arm: target_hardware_id="Sub_B8023212CFA4"\n` +
+      `  - ARM_HOME: smoothly return joints to home (90 degrees)\n` +
+      `  - ARM_REACH_CENTER: move arm to center forward waypoint\n` +
+      `  - ARM_REACH_LEFT: move arm to left workspace waypoint\n` +
+      `  - ARM_REACH_RIGHT: move arm to right workspace waypoint\n` +
+      `  - ARM_MOVE: move arm to arbitrary x, y, z, pitch coordinates\n` +
+      `  - ARM_GRIPPER: actuate gripper closure percent (0 to 100)\n` +
+      `- Active Device (Jetson): target_hardware_id="Sub_5FE6EC984A4A"\n` +
+      `  - SEARCH_QUERY: answer a user question using browsing\n` +
+      `  - INSPECT: inspect something using its pipeline\n` +
+      `If you choose an Active Device command, include user_prompt and context.\n` +
+      `If no tool call is needed, return tool_calls as [].`;
+
+    const messagesBase = [new SystemMessage(systemPrompt), new HumanMessage(userMessage)];
+
+    let lastContent = '';
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const res = await model.invoke(
+        attempt === 0
+          ? messagesBase
+          : [
+              ...messagesBase,
+              new SystemMessage(
+                `Your previous response was invalid. Return ONLY the JSON object with keys "message" and "tool_calls". No extra words.`
+              ),
+            ]
+      );
+
+      const content = typeof res.content === 'string' ? res.content : JSON.stringify(res.content);
+      lastContent = content;
+      const normalized = extractAgentResponse(content);
+      if (normalized) return Response.json(normalized, { status: 200 });
+    }
+
+    const preview = stripCodeFences(lastContent).slice(0, 2000);
+    return Response.json({ message: preview || 'Agent response was not valid JSON.', tool_calls: [] }, { status: 200 });
+  } catch (error: any) {
+    return Response.json({ message: 'Agent error', tool_calls: [], detail: String(error?.message || error) }, { status: 500 });
+  }
+}
