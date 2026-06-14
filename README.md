@@ -95,6 +95,8 @@ sequenceDiagram
     Server->>Server: 6. Verify & Settle on Sui
 ```
 
+---
+
 **Live Production Facilitator (Testnet):**
 - **Sponsor Endpoint:** `POST https://sui.hackathon.dpdns.org/sponsor` (Returns co-signed PTB)
 - **Settle Endpoint:** `POST https://sui.hackathon.dpdns.org/settle` (Executes on-chain settlement)
