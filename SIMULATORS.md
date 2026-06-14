@@ -27,15 +27,18 @@
 
 When you use both simulators together, this is what actually happens behind the scenes:
 
-```
-[You] → [DApp Simulator] → [Simulator Gateway (simgate.hackathon.dpdns.org)]
-                ↕                              ↕
-        [Sui Testnet Wallet]         [MQTT Broker (wss://mqtt.hackathon.dpdns.org)]
-                                               ↕
-                                    [Devices Simulator]
-                                    (acts as the hardware)
-                                               ↕
-                                    [Walrus Testnet Storage]
+```mermaid
+graph TD
+    User([👤 You]) --> DApp[📱 DApp Simulator]
+    DApp <--> Wallet[👛 Sui Testnet Wallet]
+    
+    DApp -- "HTTP/x402" --> Gateway[🛡️ Simulator Gateway<br>simgate.hackathon.dpdns.org]
+    
+    Gateway <--> Broker[📡 MQTT Broker<br>wss://mqtt.hackathon.dpdns.org]
+    
+    Broker <--> Devices[🦾 Devices Simulator<br>Acts as hardware]
+    
+    Devices -. "Saves Receipts" .-> Walrus[🗃️ Walrus Testnet Storage]
 ```
 
 The **Devices Simulator** connects to the same MQTT broker as the real hardware. When the DApp triggers a command, the Devices Simulator receives it, processes it, and returns a receipt — exactly like a physical device would.
