@@ -364,7 +364,7 @@ Click **"Open Walrus Explorer"** in the toast to view the raw JSON telemetry rec
 </div>
 
 <div align="center">
-  <img src="images/walrus2.png" alt="Walrus Explorer View" width="60%"/>
+  <img src="images/walrus2.png" alt="Walrus Explorer View" width="40%"/>
 </div>
 <div align="center">
   <i>*Fig 7. The Walrus Explorer displays the immutable JSON receipt payload.*</i>

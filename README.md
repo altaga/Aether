@@ -268,14 +268,14 @@ sequenceDiagram
 ---
 
 <div align="center">
-  <img src="images/walrus1.png" alt="Walrus Simulator Integration" width="40%"/>
+  <img src="images/walrus1.png" alt="Walrus Simulator Integration" width="60%"/>
 </div>
 <div align="center">
   <i>*Fig 4. The Global Bus Simulator immediately displays the Walrus Blob ID upon successful hardware execution.*</i>
 </div>
 
 <div align="center">
-  <img src="images/walrus2.png" alt="Walrus Explorer View" width="60%"/>
+  <img src="images/walrus2.png" alt="Walrus Explorer View" width="50%"/>
 </div>
 <div align="center">
   <i>*Fig 5. Exploring the decentralized receipt payload directly on the Walrus Testnet Aggregator network.*</i>
@@ -319,7 +319,7 @@ When a hardware command is triggered (either manually or agentically), the `Exac
 Aether provides full transparency into the underlying protocol layer. The sliding telemetry drawer exposes all real-time MQTT heartbeats, subscriptions, and x402 receipt payloads directly in the browser.
 
 <div align="center">
-  <img src="images/telemetry1.png" alt="Telemetry RPC Log" width="30%"/>
+  <img src="images/telemetry1.png" alt="Telemetry RPC Log" width="40%"/>
 </div>
 <div align="center">
   <i>*Fig 9. Real-time observability of MQTT hardware events and gateway communications.*</i>
