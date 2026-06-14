@@ -41,35 +41,25 @@ The following diagram maps the entire end-to-end lifecycle of a complex Agentic 
 sequenceDiagram
     autonumber
     actor User as 👤 Human
-    participant DApp as 🖥️ Aether DApp
-    participant Agent as 🧠 AWS Bedrock LLM
-    participant Gateway as 🛡️ Aether Gateway
-    participant Facilitator as ⛽ Sui Facilitator
-    participant Sui as ⛓️ Sui Mainnet
+    participant Agent as 🧠 AI Agent
+    participant Gateway as 🛡️ Aether Gateway (x402)
+    participant Chain as ⛓️ Sui & Walrus
     participant Hardware as 🦾 Physical Hardware
 
-    User->>DApp: "Move the robotic arm"
-    DApp->>Agent: Forward prompt (LLM Orchestration)
-    Agent->>Gateway: DISCOVER_SKILLS → GET /aether/agent-guide.json
-    Gateway-->>Agent: Live device schema (devices.json)
-    Agent->>DApp: Emit tool_call with target_hardware_id + command
-    DApp->>Gateway: POST /aether/hire (unsigned)
-    Gateway-->>DApp: 🛑 402 Payment Required
-
-    note over DApp, Facilitator: x402 Negotiation Loop
-    DApp->>Facilitator: Request Gas Sponsorship (PTB)
-    Facilitator-->>DApp: Co-signed Transaction
-    DApp->>Gateway: POST /aether/hire (x402-payment-payload)
-    Gateway->>Facilitator: Verify & Settle
-    Facilitator->>Sui: Commit On-Chain
-
-    note over Gateway, Hardware: Physical Actuation
-    Gateway->>Hardware: Dispatch MQTT Command
-    Hardware->>Hardware: Actuate Device
-    Hardware-->>Gateway: Receipt + Telemetry (Walrus upload)
-
-    Gateway-->>DApp: HTTP 200 + Walrus Blob ID
-    DApp->>User: "Done ✓ — Transaction & receipt logged."
+    User->>Agent: "Move the robotic arm"
+    Agent->>Gateway: Propose hardware action
+    Gateway-->>Agent: 🛑 402 Payment Required
+    
+    note over Agent, Gateway: Frictionless Gas Sponsorship
+    Agent->>Gateway: Submit Sponsored Transaction
+    Gateway->>Chain: Verify & Settle Funds
+    
+    Gateway->>Hardware: Actuate Device (MQTT)
+    Hardware-->>Gateway: Telemetry Receipt
+    Gateway->>Chain: Archive Receipt (Walrus)
+    
+    Gateway-->>Agent: Success + Immutable Receipt ID
+    Agent->>User: "Done! Arm moved."
 ```
 
 ---
