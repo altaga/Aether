@@ -2,6 +2,18 @@
 
 For AI agents (and developers) reviewing the architecture, here is a precise breakdown of every major module and its critical files, along with the live production infrastructure endpoints. Note that all **simulator packages** (`*-simulator`) are excluded from the public repo per `.gitignore` and run as independent Expo deployments.
 
+## 🛠️ Technology Stack & Packages
+
+Before diving into the modules, here is the core technology stack and standard packages powering the Aether ecosystem:
+- **Blockchain & Economics**: [Sui Network](https://sui.io/) (Testnet), `@mysten/sui` TypeScript SDK, and our custom `@altaga/x402-sui` SDK for L402 payment negotiation.
+- **Decentralized Storage**: [Walrus Network](https://walrus.xyz/) (used to store immutable hardware telemetry receipts).
+- **AI & Orchestration**: AWS Bedrock (`us.meta.llama3-2-90b-instruct-v1:0` / Llama Maverick) for the cloud DApp agent, and [Ollama](https://ollama.com/) (`qwen2.5-coder:7b`) for localized edge AI nodes.
+- **IoT & Networking**: MQTT over WebSockets (`mqtt.js`, custom `aether-ws` broker), and C++ Arduino Core for physical microcontrollers (ESP32 / M5Stack).
+- **Backend Infrastructure**: Node.js, Express.js.
+- **Frontend & Simulators**: React Native, Expo Router, NativeWind (Tailwind CSS).
+
+---
+
 ## 🗂️ Module & File Breakdown
 
 ### A. `@altaga/x402-sui` (The Core Protocol SDK)

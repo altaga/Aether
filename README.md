@@ -14,7 +14,10 @@
 - 🤖 **If you're an AI Agent:** Stop here and immediately read the [**`AGENT.md`**](./AGENT.md) manifesto. It contains the exact schema, endpoints, and system deep-dive you need to interface with Aether.
 - 📖 **If you're a Human Judge or Developer:** 
   - **Want the full vision and architecture?** Keep reading this `README.md` below!
-  - **Want to test it right now?** Read the [**`SIMULATORS.md`**](./SIMULATORS.md) guide to use the live network without hardware.
+  - **Want to test it right now?** Open our Live Simulators on Sui Testnet:
+    - 📱 [**DApp Control Center Simulator**](https://aether-dapp-simulator.expo.app/)
+    - 🦾 [**Physical Devices Simulator**](https://aether-devices-simulator.expo.app/)
+    - ⚠️ *We highly recommend jumping to the [**`SIMULATORS.md`**](./SIMULATORS.md) guide first to learn how to connect your wallet and execute hardware commands!*
 
 ---
 
