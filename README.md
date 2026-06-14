@@ -33,7 +33,12 @@ Why haven't we automated this yet? Because giving an AI agent direct, unfettered
 2. **Economic Friction**: Hardware has real-world running costs—electricity, wear-and-tear, and bandwidth. There is no standard, frictionless way for an autonomous software agent to pay a physical machine for its services in real-time.
 3. **Accountability**: If an AI agent actuates a machine, where is the immutable, cryptographically secure proof that the action was requested and executed?
 
-![The Rent a Human Problem](images/rent_a_human.png)
+<div align="center">
+  <img src="images/rent_a_human.png" alt="The Rent a Human Problem" width="80%"/>
+</div>
+<div align="center">
+  <i>*Fig 1. The "Rent a Human" bottleneck in physical AI execution.*</i>
+</div>
 
 ---
 
@@ -121,8 +126,14 @@ npm install @altaga/x402-sui
 
 ### 📦 NPM Package
 
-[![Aether npm CLI](images/npm.png)](https://www.npmjs.com/package/@altaga/x402-sui)
-*(Click the image above to open the full NPM documentation)*
+<div align="center">
+  <a href="https://www.npmjs.com/package/@altaga/x402-sui">
+    <img src="images/npm.png" alt="Aether npm CLI"/>
+  </a>
+</div>
+<div align="center">
+  <i>*Fig 2. The Aether npm CLI package documentation. (Click the image above to open the full NPM documentation)*</i>
+</div>
 
 ---
 
@@ -223,6 +234,9 @@ These simulators are deeply integrated with the live Gateway and communicate ove
 <div align="center">
   <img src="images/emulator1.png" alt="Device Emulator Dashboard" width="80%"/>
 </div>
+<div align="center">
+  <i>*Fig 3. The Aether Device Emulator Dashboard.*</i>
+</div>
 
 ---
 
@@ -252,11 +266,19 @@ sequenceDiagram
     GW->>DApp: 5. HTTP 200 (Includes Blob_ID)
 ```
 
-![Walrus Simulator Integration](images/walrus1.png)
-*Fig 1. The Global Bus Simulator immediately displays the Walrus Blob ID upon successful hardware execution.*
+<div align="center">
+  <img src="images/walrus1.png" alt="Walrus Simulator Integration" width="80%"/>
+</div>
+<div align="center">
+  <i>*Fig 4. The Global Bus Simulator immediately displays the Walrus Blob ID upon successful hardware execution.*</i>
+</div>
 
-![Walrus Explorer View](images/walrus2.png)
-*Fig 2. Exploring the decentralized receipt payload directly on the Walrus Testnet Aggregator network.*
+<div align="center">
+  <img src="images/walrus2.png" alt="Walrus Explorer View" width="80%"/>
+</div>
+<div align="center">
+  <i>*Fig 5. Exploring the decentralized receipt payload directly on the Walrus Testnet Aggregator network.*</i>
+</div>
 
 ---
 
@@ -265,23 +287,42 @@ sequenceDiagram
 ### 🎛️ Direct Control Interface
 Manual hardware control panel. Connects your Sui wallet and triggers x402 payments directly from the browser.
 
-![Direct Control](images/ui1.png)
+<div align="center">
+  <img src="images/ui1.png" alt="Direct Control" width="80%"/>
+</div>
+<div align="center">
+  <i>*Fig 6. Direct Control Panel for manual hardware execution.*</i>
+</div>
 
 ### 🤖 Agentic Execution Interface
 Chat interface powered by **AWS Bedrock (Meta Llama 4 Maverick)**. The agent autonomously discovers the live device schema via `DISCOVER_SKILLS`, then orchestrates multi-step hardware commands.
 
-![Agentic Control](images/ui2.png)
+<div align="center">
+  <img src="images/ui2.png" alt="Agentic Control" width="80%"/>
+</div>
+<div align="center">
+  <i>*Fig 7. Agentic Control Center for autonomous AI hardware orchestration.*</i>
+</div>
 
 ### 💳 Wallet Interaction (x402 Settlement)
 When a hardware command is triggered (either manually or agentically), the `ExactSuiDappScheme` intercepts the `402 Payment Required` response and prompts the connected Sui wallet to sign and co-settle the transaction.
 
-![Wallet Interaction](images/ui3.png)
+<div align="center">
+  <img src="images/ui3.png" alt="Wallet Interaction" width="80%"/>
+</div>
+<div align="center">
+  <i>*Fig 8. Wallet interaction prompt for x402 transaction settlement.*</i>
+</div>
 
 ### 📡 Real-Time Telemetry & RPC
 Aether provides full transparency into the underlying protocol layer. The sliding telemetry drawer exposes all real-time MQTT heartbeats, subscriptions, and x402 receipt payloads directly in the browser.
 
-![Telemetry RPC Log](images/telemetry1.png)
-*Fig 3. Real-time observability of MQTT hardware events and gateway communications.*
+<div align="center">
+  <img src="images/telemetry1.png" alt="Telemetry RPC Log" width="80%"/>
+</div>
+<div align="center">
+  <i>*Fig 9. Real-time observability of MQTT hardware events and gateway communications.*</i>
+</div>
 
 ### The Agentic Guide (`/aether/agent-guide.json`)
 The true power of Aether is its openness to external AI. **ANY AI Agent**—whether it is an AutoGPT instance, a LangChain script, or a custom bot—can autonomously discover and control the physical hardware.
