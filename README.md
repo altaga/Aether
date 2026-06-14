@@ -265,6 +265,7 @@ sequenceDiagram
     Walrus-->>GW: 4. Returns Permanent Blob_ID
     GW->>DApp: 5. HTTP 200 (Includes Blob_ID)
 ```
+---
 
 <div align="center">
   <img src="images/walrus1.png" alt="Walrus Simulator Integration" width="80%"/>
