@@ -268,7 +268,7 @@ sequenceDiagram
 ---
 
 <div align="center">
-  <img src="images/walrus1.png" alt="Walrus Simulator Integration" width="60%"/>
+  <img src="images/walrus1.png" alt="Walrus Simulator Integration" width="50%"/>
 </div>
 <div align="center">
   <i>*Fig 4. The Global Bus Simulator immediately displays the Walrus Blob ID upon successful hardware execution.*</i>
