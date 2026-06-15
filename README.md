@@ -37,7 +37,7 @@ Why haven't we automated this yet? Because giving an AI agent direct, unfettered
   <img src="images/rent_a_human.png" alt="The Rent a Human Problem" width="80%"/>
 </div>
 <div align="center">
-  <i>*Fig 1. The "Rent a Human" bottleneck in physical AI execution.*</i>
+  <i>Fig 1. The "Rent a Human" bottleneck in physical AI execution.</i>
 </div>
 
 ---
@@ -132,7 +132,7 @@ npm install @altaga/x402-sui
   </a>
 </div>
 <div align="center">
-  <i>*Fig 2. The Aether npm CLI package documentation. (Click the image above to open the full NPM documentation)*</i>
+  <i>Fig 2. The Aether npm CLI package documentation. (Click the image above to open the full NPM documentation)</i>
 </div>
 
 ---
@@ -235,7 +235,7 @@ These simulators are deeply integrated with the live Gateway and communicate ove
   <img src="images/emulator1.png" alt="Device Emulator Dashboard" width="80%"/>
 </div>
 <div align="center">
-  <i>*Fig 3. The Aether Device Emulator Dashboard.*</i>
+  <i>Fig 3. The Aether Device Emulator Dashboard.</i>
 </div>
 
 ---
@@ -271,14 +271,14 @@ sequenceDiagram
   <img src="images/walrus1.png" alt="Walrus Simulator Integration" width="50%"/>
 </div>
 <div align="center">
-  <i>*Fig 4. The Global Bus Simulator immediately displays the Walrus Blob ID upon successful hardware execution.*</i>
+  <i>Fig 4. The Global Bus Simulator immediately displays the Walrus Blob ID upon successful hardware execution.</i>
 </div>
 
 <div align="center">
   <img src="images/walrus2.png" alt="Walrus Explorer View" width="50%"/>
 </div>
 <div align="center">
-  <i>*Fig 5. Exploring the decentralized receipt payload directly on the Walrus Testnet Aggregator network.*</i>
+  <i>Fig 5. Exploring the decentralized receipt payload directly on the Walrus Testnet Aggregator network.</i>
 </div>
 
 ---
@@ -292,7 +292,7 @@ Manual hardware control panel. Connects your Sui wallet and triggers x402 paymen
   <img src="images/ui1.png" alt="Direct Control" width="80%"/>
 </div>
 <div align="center">
-  <i>*Fig 6. Direct Control Panel for manual hardware execution.*</i>
+  <i>Fig 6. Direct Control Panel for manual hardware execution.</i>
 </div>
 
 ### 🤖 Agentic Execution Interface
@@ -302,7 +302,7 @@ Chat interface powered by **AWS Bedrock (Meta Llama 4 Maverick)**. The agent aut
   <img src="images/ui2.png" alt="Agentic Control" width="80%"/>
 </div>
 <div align="center">
-  <i>*Fig 7. Agentic Control Center for autonomous AI hardware orchestration.*</i>
+  <i>Fig 7. Agentic Control Center for autonomous AI hardware orchestration.</i>
 </div>
 
 ### 💳 Wallet Interaction (x402 Settlement)
@@ -312,7 +312,7 @@ When a hardware command is triggered (either manually or agentically), the `Exac
   <img src="images/ui3.png" alt="Wallet Interaction" width="80%"/>
 </div>
 <div align="center">
-  <i>*Fig 8. Wallet interaction prompt for x402 transaction settlement.*</i>
+  <i>Fig 8. Wallet interaction prompt for x402 transaction settlement.</i>
 </div>
 
 ### 📡 Real-Time Telemetry & RPC
@@ -322,7 +322,7 @@ Aether provides full transparency into the underlying protocol layer. The slidin
   <img src="images/telemetry1.png" alt="Telemetry RPC Log" width="40%"/>
 </div>
 <div align="center">
-  <i>*Fig 9. Real-time observability of MQTT hardware events and gateway communications.*</i>
+  <i>Fig 9. Real-time observability of MQTT hardware events and gateway communications.</i>
 </div>
 
 ### The Agentic Guide (`/aether/agent-guide.json`)
