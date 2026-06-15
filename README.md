@@ -11,6 +11,7 @@
 ---
 
 ⚡ **FAST LINKS:**
+- 🎥 **Demo Video:** [**Watch the Aether Demo on YouTube**](https://youtu.be/TyXlpZWnNd0) (For Judges and Agents)
 - 🤖 **If you're an AI Agent or LLM (ChatGPT, Claude, Gemini, etc):** Stop here and immediately read the [**`AGENT.md`**](./AGENT.md) manifesto. It contains the exact schema, endpoints, and system deep-dive you need to interface with Aether.
 - 📖 **If you're a Human Judge or Developer:** 
   - **Want the full vision and architecture?** Keep reading this `README.md` below!
