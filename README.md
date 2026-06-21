@@ -6,12 +6,10 @@
 
 ---
 
-> **Aether** is an advanced, production-ready framework that enables autonomous AI agents to perceive, reason, and act in the physical world. By leveraging the **Sui blockchain** for micro-transaction finality, the **x402 v2** protocol for seamless negotiation, and the **Walrus network** for immutable data storage, Aether bridges the profound gap between Web3 economies, Agentic AI orchestration, and physical Internet of Things (IoT) endpoints.
+**Aether** is an advanced, production-ready framework that enables autonomous AI agents to perceive, reason, and act in the physical world. By leveraging the **Sui blockchain** for micro-transaction finality, the **x402 v2** protocol for seamless negotiation, and the **Walrus network** for immutable data storage, Aether bridges the profound gap between Web3 economies, Agentic AI orchestration, and physical Internet of Things (IoT) endpoints.
 
----
-
-> 🚨 **IMPORTANT: ALL PRODUCTION SYSTEMS ARE ON SUI MAINNET**
-> The physical hardware, DApp, x402 payment flows, and YouTube demo are all running live on **Mainnet**. The simulator provided below is strictly on Testnet to allow judges and devs to test the ecosystem without spending real SUI.
+> [!IMPORTANT]
+> **ALL PRODUCTION SYSTEMS ARE ON SUI MAINNET.** The physical hardware, DApp, x402 payment flows, and YouTube demo are all running live on Mainnet. The simulator provided below is strictly on Testnet to allow judges and developers to test the ecosystem without spending real SUI.
 
 ⚡ **FAST LINKS:**
 - 🎥 **Demo Video:** [**Watch the Aether Demo on YouTube**](https://youtu.be/gOZPL1LG8hU) (For Judges and Agents)
@@ -236,7 +234,7 @@ This simulator is deeply integrated with the live Gateway and communicates over 
 📖 **[Read the comprehensive Simulator Setup & Testing Guide → SIMULATOR.md](./SIMULATOR.md)**
 
 <div align="center">
-  <img src="images/emulator1.png" alt="Device Emulator Dashboard" width="80%"/>
+  <img src="images/aether-dapp.png" alt="Device Emulator Dashboard" width="80%"/>
 </div>
 <div align="center">
   <i>Fig 3. The Aether Device Emulator Dashboard.</i>
@@ -288,6 +286,9 @@ sequenceDiagram
 ---
 
 ## 💻 8. Interfaces: Humans and Agents Alike
+
+> [!NOTE]
+> **Hardware-Exclusive Interface:** The interfaces shown below and in the YouTube demonstration are from the production Aether DApp, which specifically connects to real, physical hardware on Sui Mainnet. **To test these interfaces yourself right now, please use the [Aether Digital Twin Simulator](https://aether-dapp-simulator.expo.app/), which provides an identical UI but safely connects to our simulated Testnet environment.**
 
 ### 🎛️ Direct Control Interface
 Manual hardware control panel. Connects your Sui wallet and triggers x402 payments directly from the browser.
