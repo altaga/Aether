@@ -221,7 +221,7 @@ graph LR
 
 ## 6. Hardware-Free Testing: The Aether Simulator
 
-> [!CAUTION]
+> [!IMPORTANT]
 > **ALL PRODUCTION SYSTEMS ARE ON SUI MAINNET**
 > The Aether physical hardware, the production DApp, the x402 payment flow, and the entire [YouTube demonstration video](https://youtu.be/gOZPL1LG8hU) are all running live on **Sui Mainnet**.
 > 

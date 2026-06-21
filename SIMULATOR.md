@@ -6,7 +6,7 @@
 
 ---
 
-> [!CAUTION]
+> [!IMPORTANT]
 > **IMPORTANT: ALL PRODUCTION SYSTEMS ARE ON SUI MAINNET.** The physical Aether hardware, production DApp, and video demo all run live on Mainnet. However, to allow judges to test the system safely without spending real SUI, this guide walks you through using the **production-grade Aether simulator** deployed on **Sui Testnet**. No physical hardware is required, but it faithfully replicates the full Mainnet Agentic IoT economy loop: wallet connection → x402 payment → MQTT command dispatch → hardware receipt → Walrus archive.
 
 ---
