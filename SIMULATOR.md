@@ -1,4 +1,4 @@
-# 🖥️ Aether Simulators — Complete Usage Guide
+# 🖥️ Aether Simulator — Complete Usage Guide
 
 <div align="center">
   <img src="images/logoAE.png" alt="Aether Logo" width="40%"/>
@@ -6,7 +6,7 @@
 
 ---
 
-> This guide walks you through using the **two production-ready Aether simulators** deployed on **Sui Testnet**. No physical hardware is required. The simulators faithfully replicate the full Agentic IoT economy loop: wallet connection → x402 payment → MQTT command dispatch → hardware receipt → Walrus archive.
+> 🚨 **IMPORTANT: ALL PRODUCTION SYSTEMS ARE ON SUI MAINNET.** The physical Aether hardware, production DApp, and video demo all run live on Mainnet. However, to allow judges to test the system safely without spending real SUI, this guide walks you through using the **production-grade Aether simulator** deployed on **Sui Testnet**. No physical hardware is required, but it faithfully replicates the full Mainnet Agentic IoT economy loop: wallet connection → x402 payment → MQTT command dispatch → hardware receipt → Walrus archive.
 
 ---
 
@@ -14,34 +14,33 @@
 
 | Step | What to do |
 |---|---|
-| 1 | Open the **[Devices Simulator](https://aether-devices-simulator.expo.app/)** in Tab 1 |
-| 2 | Open the **[DApp Simulator](https://aether-dapp-simulator.expo.app/)** in Tab 2 |
-| 3 | Install a Sui wallet browser extension (**[Slush](https://slush.app/) recommended**) |
-| 4 | Get free Testnet SUI + USDC (faucet links below) |
-| 5 | Connect your wallet in the DApp Simulator |
-| 6 | Click any hardware button and sign the x402 transaction |
+| 1 | Open the **[Aether Simulator](https://aether-dapp-simulator.expo.app/)** |
+| 2 | Install a Sui wallet browser extension (**[Slush](https://slush.app/) recommended**) |
+| 3 | Get free Testnet SUI + USDC (faucet links below) |
+| 4 | Connect your wallet in the Simulator |
+| 5 | Click any hardware button and sign the x402 transaction |
 
 ---
 
 ## 🗺️ Architecture Overview
 
-When you use both simulators together, this is what actually happens behind the scenes:
+When you use the simulator, this is what actually happens behind the scenes:
 
 ```mermaid
 graph TD
-    User([👤 You]) --> DApp[📱 DApp Simulator]
+    User([👤 You]) --> DApp[📱 Unified Simulator UI]
     DApp <--> Wallet[👛 Sui Testnet Wallet]
     
     DApp -- "HTTP/x402" --> Gateway[🛡️ Simulator Gateway<br>simgate.hackathon.dpdns.org]
     
     Gateway <--> Broker[📡 MQTT Broker<br>wss://mqtt.hackathon.dpdns.org]
     
-    Broker <--> Devices[🦾 Devices Simulator<br>Acts as hardware]
+    Broker <--> Twin[🦾 Digital Twin Engine<br>Acts as hardware]
     
-    Devices -. "Saves Receipts" .-> Walrus[🗃️ Walrus Testnet Storage]
+    Twin -. "Saves Receipts" .-> Walrus[🗃️ Walrus Testnet Storage]
 ```
 
-The **Devices Simulator** connects to the same MQTT broker as the real hardware. When the DApp triggers a command, the Devices Simulator receives it, processes it, and returns a receipt — exactly like a physical device would.
+The **Digital Twin Engine** connects to the same MQTT broker as the real hardware. When the DApp triggers a command, the Twin receives it, animates its 3D visualization, processes it, and returns a receipt — exactly like a physical device would.
 
 ---
 
@@ -49,7 +48,7 @@ The **Devices Simulator** connects to the same MQTT broker as the real hardware.
 
 ### 1. Install a Sui Wallet
 
-You need a Sui-compatible browser extension wallet. The simulators are configured to only accept wallets with Sui features.
+You need a Sui-compatible browser extension wallet. The simulator is configured to only accept wallets with Sui features.
 
 **Recommended wallets:**
 - [Slush Wallet](https://slush.app/) — Chrome ⭐ **Recommended**
@@ -87,17 +86,17 @@ Aether uses **USDC (Testnet)** as the payment token for x402 transactions. The t
 
 ---
 
-## 📺 Tab 1 — Devices Simulator
+## 📺 The Simulator Interface
 
-**URL:** [https://aether-devices-simulator.expo.app/](https://aether-devices-simulator.expo.app/)
+**URL:** [https://aether-dapp-simulator.expo.app/](https://aether-dapp-simulator.expo.app/)
 
-This application acts as your **virtual hardware rack**. It connects to the Aether MQTT broker and waits for commands from the DApp Simulator, exactly as real physical devices would.
+The simulator combines the **DApp Control Center** (Left) and the **Hardware Digital Twin** (Right) into a single, cohesive view. It connects to the Aether MQTT broker and processes commands exactly as real physical devices would.
 
 <div align="center">
-  <img src="images/emulator1.png" alt="Devices Simulator UI" width="80%"/>
+  <img src="images/aether-dapp.png"width="80%"/>
 </div>
 <div align="center">
-  <i>Fig 1. The Aether Devices Simulator Dashboard.</i>
+  <i>Fig 1. The Aether Simulator Dashboard showing both the DApp and the Hardware Twin side-by-side.</i>
 </div>
 
 ### Header Bar
@@ -114,55 +113,53 @@ This application acts as your **virtual hardware rack**. It connects to the Aeth
 - **`BLOB`**: The full Walrus Blob ID — the immutable receipt hash (click to open in explorer)
 - **`TIME`**: The timestamp of when the receipt was archived
 
+> [!IMPORTANT]  
+> **Why Walrus?** While general MQTT telemetry is ephemeral by design, Aether specifically captures **hardware execution receipts** and stores them on the Walrus network as immutable, decentralized blobs. This ensures permanent cryptographic proof of all physical actions without bloat.
+
 **Top-right — `OPEN TELEMETRY` button:** Click to open a sliding drawer with all raw MQTT events in real time (subscriptions, publishes, receipts, Walrus uploads, errors).
 
 ---
 
-### The Three Device Cards
+### The Dual-Panel Dashboard
 
+#### 🎛️ Left Panel — DApp Control Center
+This is the command interface, identical to the production Aether web app. It bridges human intent with the decentralized network.
+
+It features two operating modes:
+
+**1. Control Tab**  
+Manual dispatch mode. Trigger specific x402 transactions (`⌂ HOME`, `Front High`, `Right Reach`, `Right Low`) to manually drive the arm. Each button click prompts your Sui wallet for a transaction signature.
 <div align="center">
-  <img src="images/cards.png" alt="Aether Device Cards" width="80%"/>
+  <img src="images/panel1.png" alt="Direct Control Panel" width="60%"/>
 </div>
 <div align="center">
-  <i>Fig 3. The three primary simulated node interfaces: Passive ESP32 (Left), 4DOF Robotic Arm (Center), and Active Jetson Nano (Right).</i>
+  <i>Fig 3. The Direct Control interface for dispatching deterministic hardware macros.</i>
 </div>
 
-#### 🟡 Left Card — Passive Device (ESP32 Mock)
-**Node ID:** `Sub_B8023212CFA3`
+**2. Agent Tab**  
+Autonomous AI orchestration. Describe your intent in natural language (e.g., *"Move the arm to a high position then return home"*) and the AWS Bedrock agent will autonomously formulate the tool calls, prompting your wallet to sign the entire multi-step sequence.
+<div align="center">
+  <img src="images/agent.png" alt="Agent Sequence Planner UI" width="60%"/>
+</div>
+<div align="center">
+  <i>Fig 4. The Agentic Sequence Planner visually executing a multi-step robotic sequence.</i>
+</div>
 
-This card simulates an **M5Stack ESP32 IoT sensor node**. It features a digital readout display showing live simulated network and sensor metrics.
-
-Below the device display, two interactive sliders let you manually set what the sensor will report when queried:
-- **Temperature Sensor** — drag to set value (e.g. `24.0 °C`)
-- **Sound Sensor** — drag to set noise level (e.g. `45 dB`)
-
-When the DApp sends `READ_SENSORS`, the receipt will contain exactly the values you set here. When `ON`/`OFF` is sent, the **STATE** shown in the device display toggles between `HIGH` and `LOW`.
-
----
-
-#### 🔵 Center Card — Passive Device (Robotic Arm Mock)
+#### 🦾 Right Panel — Hardware Digital Twin
 **Node ID:** `Sub_6503CAF9C2C7`
 
-This card simulates a **4-DOF robotic arm digital twin**. The card description reads:
-> *"A 4DOF robotic arm digital twin. Bridges the passive (telemetry) and active (agent) layers — receives intent over MQTT, drives the inverse kinematics solver, and renders the predicted pose in real time."*
+<div align="center">
+  <img src="images/arm.png" alt="Hardware Digital Twin" width="80%"/>
+</div>
+<div align="center">
+  <i>Fig 5. The 3D Digital Twin visualization resolving physical trajectory.</i>
+</div>
 
-The card displays a **live 3D wireframe visualization** of the arm (`AETHER 4DOF - DIGITAL TWIN`), rendered inside a hemispheric dome grid. The arm pose updates visually as commands arrive.
+This panel acts as the physical hardware receiver. It connects directly to the Aether MQTT broker, independent of the DApp.
 
-Below the 3D view you will find:
-- **`MANUAL CONTROL`** section with buttons: `⌂ HOME`, `▲ Front High`, `▶ Right Reach`, `▼ Right Low` — these let you manually trigger arm poses directly from the simulator without going through the DApp
-- **`LIVE STATE`** section — shows the last received command and current joint state
-
----
-
-#### 🟢 Right Card — Active Device (Jetson Nano Mock)
-**Node ID:** `Sub_C0C1CE79B23D`
-
-This card simulates a **Jetson Nano AI edge node**. The card description reads:
-> *"A hardware node powered by a local Large Language Model. It understands natural language, reasons autonomously, and crafts intelligent responses — no fixed script, just real-time AI thinking."*
-
-The card displays a **live system terminal** showing dynamically animated hardware metrics (CPU, GPU, MEM, and TEMP). When the AI receives a prompt, these vitals visually spike into the amber and red zones, accompanied by an alert stating `SYS: ALLOCATING TENSORS FOR LOCAL INFERENCE`. When inactive, the vitals cool down and the system returns to `SYS: IDLE / STANDBY`.
-
-Below the terminal there is a **chat panel** that starts with `Waiting for Gateway intent...`. When the DApp Agent sends a prompt to this node, the prompt and AI response appear here in real time — showing you exactly what the Jetson would process if it were real hardware.
+- **Live 3D Visualization:** A WebGL-rendered 4-DOF robotic arm that processes incoming kinematic intents from the broker and animates the physical trajectory in real time.
+- **Hardware Telemetry:** Displays the last received command and its real-time readiness status (`READY`).
+- **Cryptographic Receipts:** Once the 3D arm finishes its execution trajectory, the digital twin publishes a cryptographically signed receipt back to the broker, closing the decentralized loop.
 
 ---
 
@@ -179,51 +176,27 @@ Click **`OPEN TELEMETRY`** in the top-right to open a full-width sliding drawer.
   <img src="images/telemetry1.png" alt="Telemetry RPC Log" width="30%"/>
 </div>
 <div align="center">
-  <i>Fig 4. The real-time Telemetry & RPC log drawer sliding over the simulator dashboard, offering full visibility into the MQTT message lifecycle.</i>
+  <i>Fig 6. The real-time Telemetry & RPC log drawer sliding over the simulator dashboard, offering full visibility into the MQTT message lifecycle.</i>
 </div>
 
 ---
 
-## 🎮 Tab 2 — DApp Simulator
+## 🕹️ Step 1 — Connect Your Wallet
 
-**URL:** [https://aether-dapp-simulator.expo.app/](https://aether-dapp-simulator.expo.app/)
-
-This is the **control interface**. It is where you connect your wallet and trigger x402-paid hardware commands. It has two operating modes: **Direct Control** and **Agent**.
-
-### Step 1 — Connect Your Wallet
-
-1. Click the **Connect** button in the top-right corner
-2. Select your wallet from the list (only Sui-compatible wallets appear)
-3. Approve the connection request in your wallet extension
-4. Your wallet address will appear in the button
+1. Click the **Connect** button in the top-right corner of the simulator.
+2. Select your wallet from the list (only Sui-compatible wallets appear).
+3. Approve the connection request in your wallet extension.
+4. Your wallet address will appear in the button.
 
 > ⚠️ If you see "Unlock or finish setting up your Sui wallet", your wallet is installed but locked. Open the extension and unlock it first.
 
 ---
 
-## 🕹️ Direct Control Tab
+## 🎮 Direct Control Tab
 
-Manual, deterministic control. You trigger a specific pre-defined command and sign an x402 payment directly.
+On the left side of the screen, you will find the DApp Control Center. It has two operating modes: **Direct Control** and **Agent**.
 
-### Passive Device Card
-
-| Button | Command | Effect in Devices Simulator |
-|---|---|---|
-| **Read Sensors** | `READ_SENSORS` | Returns temperature + sound readings from the slider values you set |
-| **LED ON** | `ON` | Turns the simulated LED on (green indicator lights up) |
-| **LED OFF** | `OFF` | Turns the simulated LED off |
-
-**How to use:**
-1. Make sure your wallet is connected
-2. Click **Read Sensors**
-3. A Sui wallet popup will appear asking you to sign a transaction
-4. Click **Approve** in your wallet
-5. Watch the telemetry logs in both tabs update
-6. A toast notification will appear with:
-   - A link to view the transaction on **SUI Scan (Testnet)**
-   - A link to view the receipt on **Walrus Testnet Explorer**
-
-### Robotic Arm Card
+In Direct Control mode, you trigger a specific pre-defined command and sign an x402 payment manually.
 
 | Button | Command | Description |
 |---|---|---|
@@ -232,17 +205,13 @@ Manual, deterministic control. You trigger a specific pre-defined command and si
 | **Right Reach** | `MOVE2` | Extends arm to the right |
 | **Right Low** | `MOVE3` | Lowers arm to the right side |
 
-Each button triggers an x402 transaction — sign it in your wallet to dispatch the command.
-
-### Active Node Card
-
-A simple chat input. Type a natural language query and click **Send**.
-
-1. Your prompt is sent (via x402) to the Jetson simulator
-2. The simulator processes it through the deployed AI model
-3. The response is displayed in the chat
-
-> Example prompts: `"What is the weather in Tokyo?"`, `"Explain quantum computing in one paragraph"`, `"Say hello in French"`
+**How to use:**
+1. Make sure your wallet is connected
+2. Click **Front High** (or any other macro)
+3. A Sui wallet popup will appear asking you to sign a transaction
+4. Click **Approve** in your wallet
+5. Watch the 3D digital twin on the right animate in real-time as the x402 pipeline resolves
+6. A toast notification will appear with links to **SUI Scan (Testnet)** and the receipt on **Walrus Testnet Explorer**
 
 ---
 
@@ -250,42 +219,35 @@ A simple chat input. Type a natural language query and click **Send**.
 
 Fully autonomous AI orchestration. Instead of manually picking commands, you describe what you want in natural language and the **AWS Bedrock (Meta Llama 4 Maverick)** agent decides which hardware to invoke and in what sequence.
 
-### How it works
+### ⚡ Agentic Sequential Planner
 
-1. Your message is sent to the Aether Orchestrator API
-2. The LLM automatically calls `DISCOVER_SKILLS` to fetch the live hardware schema from the gateway
-3. The LLM reasons about your request and emits one or more `tool_calls`
-4. The DApp iterates through the tool calls, executing each as a separate x402 transaction
-5. Each response is added to the chat
+The Simulator features 1:1 visual parity with the production DApp's sequence execution planner. When the AI determines that a task requires multiple physical steps, it generates a sequential execution plan.
+
+### How the Sequence Planner works
+
+1. Your message is sent to the Aether Orchestrator API.
+2. The LLM fetches the live hardware schema and emits a structured `tool_calls` array.
+3. The DApp renders a dark, premium **Execution Plan Card** in the chat, listing all pending steps.
+4. The DApp iterates through the tool calls sequentially. For each step:
+   - You sign a specific x402 transaction for that step.
+   - The UI status indicator shifts from grey `PENDING` to cyan `⚡ RUNNING`.
+   - The physical/simulated device executes the movement.
+   - Upon completion, the status shifts to a green `✓ SUCCESS`.
+5. Once all steps complete, the agent emits a final success summary.
 
 ### Example prompts to try
 
 ```
-"What devices do you have available?"
+"Move the arm to the Right Reach position, and then return it to the Home position."
 ```
-→ The agent will discover and describe all connected hardware (no transactions triggered)
-
-```
-"Read the current sensor data from the passive device"
-```
-→ Agent will trigger `READ_SENSORS` on the passive node (1 transaction to sign)
+→ Agent sequences 2 tool calls (`MOVE2` then `HOME`). The execution planner renders both steps and drives the inverse kinematics twin in real-time.
 
 ```
 "Turn on the LED and then read the sensor"
 ```
-→ Agent will sequence 2 tool calls: `ON` then `READ_SENSORS` (2 transactions to sign)
+→ Agent sequences 2 tool calls: `ON` then `READ_SENSORS` (2 transactions to sign).
 
-```
-"Move the robotic arm home"
-```
-→ Agent will trigger `ARM_HOME` on the robotic arm simulator (1 transaction to sign)
-
-```
-"Ask the active node what the capital of France is"
-```
-→ Agent routes the prompt to the Jetson AI simulator
-
-> **Note**: For each tool call the agent generates, you will need to sign a wallet transaction. Multi-step commands require multiple signatures.
+> **Note**: For each tool call the agent generates, you will need to sign a wallet transaction. Multi-step commands require multiple signatures, but the visual sequence planner tracks your progress through the entire macro operation!
 
 ---
 
@@ -468,7 +430,7 @@ The Facilitator is the **gas sponsorship service** — it co-signs every x402 Pr
 ---
 
 <div align="center">
-  <i>Both simulators are production-grade Expo applications deployed via EAS on Sui Testnet.</i><br/>
+  <i>The simulator is a production-grade Expo application deployed via EAS on Sui Testnet.</i><br/>
   <i>No physical hardware required. All transactions are real and on-chain.</i>
 </div>
 

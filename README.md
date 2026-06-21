@@ -10,15 +10,17 @@
 
 ---
 
+> 🚨 **IMPORTANT: ALL PRODUCTION SYSTEMS ARE ON SUI MAINNET**
+> The physical hardware, DApp, x402 payment flows, and YouTube demo are all running live on **Mainnet**. The simulator provided below is strictly on Testnet to allow judges and devs to test the ecosystem without spending real SUI.
+
 ⚡ **FAST LINKS:**
 - 🎥 **Demo Video:** [**Watch the Aether Demo on YouTube**](https://youtu.be/TyXlpZWnNd0) (For Judges and Agents)
 - 🤖 **If you're an AI Agent or LLM (ChatGPT, Claude, Gemini, etc):** Stop here and immediately read the [**`AGENT.md`**](./AGENT.md) manifesto. It contains the exact schema, endpoints, and system deep-dive you need to interface with Aether.
 - 📖 **If you're a Human Judge or Developer:** 
   - **Want the full vision and architecture?** Keep reading this `README.md` below!
-  - **Want to test it right now?** Open our Live Simulators on Sui Testnet:
-    - 📱 [**DApp Control Center Simulator**](https://aether-dapp-simulator.expo.app/)
-    - 🦾 [**Physical Devices Simulator**](https://aether-devices-simulator.expo.app/)
-    - ⚠️ *We highly recommend jumping to the [**`SIMULATORS.md`**](./SIMULATORS.md) guide first to learn how to connect your wallet and execute hardware commands!*
+  - **Want to test it right now?** Open our Live Simulator on Sui Testnet:
+    - 📱 [**Aether Digital Twin Simulator**](https://aether-dapp-simulator.expo.app/)
+    - ⚠️ *We highly recommend jumping to the [**`SIMULATOR.md`**](./SIMULATOR.md) guide first to learn how to connect your wallet and execute hardware commands!*
 
 ---
 
@@ -208,29 +210,30 @@ graph LR
     Gateway --> Jetson
 ```
 
-## 🎮 6. Hardware-Free Testing: The Aether Simulators
+## 🎮 6. Hardware-Free Testing: The Aether Simulator
 
-We understand that reviewing a decentralized hardware project remotely can be difficult. To ensure that judges and developers can experience the complete Aether ecosystem without needing physical robotics, we built a twin set of fully functional **production-grade simulators**.
+> 🚨 **IMPORTANT: ALL PRODUCTION SYSTEMS ARE ON SUI MAINNET**
+> The Aether physical hardware, the production DApp, the x402 payment flow, and the entire YouTube demonstration video are all running live on **Sui Mainnet**.
+> 
+> However, we understand that reviewing a decentralized hardware project remotely can be difficult. To ensure that judges and developers can experience the complete Aether ecosystem safely and without spending real SUI, we have provided a fully functional **production-grade simulator on Sui Testnet**.
 
-These simulators are deeply integrated with the live Gateway and communicate over the exact same MQTT and x402 pipelines as real physical devices.
+This simulator is deeply integrated with the live Gateway and communicates over the exact same MQTT and x402 pipelines as real physical devices.
 
 ### 🌐 The Live Simulator Suite
 > **Deployed on Sui Testnet via Expo EAS**
-> To test the complete Agentic loop, open both of the following simulators in separate browser windows side-by-side.
+> To test the complete Agentic loop, simply open the simulator below.
 
 | Simulator App | Production URL | Core Functionality |
 |---|---|---|
-| **DApp Simulator** | [aether-dapp-simulator.expo.app](https://aether-dapp-simulator.expo.app/) | The primary user interface. Includes the **Direct Control Panel** for manual execution, and the **AI Control Center** for autonomous AWS Bedrock agent interactions. |
-| **Devices Simulator** | [aether-devices-simulator.expo.app](https://aether-devices-simulator.expo.app/) | The hardware twin. Mocks physical passive nodes, generates real-time telemetry (Temperature, Sound dB), actuates digital LEDs, and returns verifiable execution receipts to the Gateway. |
+| **Aether Digital Twin Simulator** | [aether-dapp-simulator.expo.app](https://aether-dapp-simulator.expo.app/) | The simulator interface. Features the **DApp Control Panel** on the left for manual and AI orchestration, and the **Hardware Digital Twin** on the right for real-time 3D visualization and telemetry. |
 
 ### How It Works
-1. Connect your Sui wallet (we recommend **Slush Wallet**) to the **DApp Simulator**.
-2. Keep the **Devices Simulator** open on screen so it stays connected to the Gateway's MQTT broker.
-3. Use the DApp to trigger a command (e.g., "Turn on the LED" or "Read the sound sensor").
-4. The DApp will negotiate the x402 payment, the Facilitator will sponsor the gas, and the Gateway will fire the MQTT event.
-5. You will see the **Devices Simulator** react instantly, turning on its UI lights and returning a verifiable receipt!
+1. Connect your Sui wallet (we recommend **Slush Wallet**) to the **Aether Simulator**.
+2. Use the DApp interface to trigger a command (e.g., "Turn on the LED" or "Read the sound sensor").
+3. The DApp will negotiate the x402 payment, the Facilitator will sponsor the gas, and the Gateway will fire the MQTT event.
+4. You will see the **Digital Twin** react instantly, animating its 3D state and returning a verifiable receipt!
 
-📖 **[Read the comprehensive Simulator Setup & Testing Guide → SIMULATORS.md](./SIMULATORS.md)**
+📖 **[Read the comprehensive Simulator Setup & Testing Guide → SIMULATOR.md](./SIMULATOR.md)**
 
 <div align="center">
   <img src="images/emulator1.png" alt="Device Emulator Dashboard" width="80%"/>

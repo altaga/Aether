@@ -1,127 +1,35 @@
 [
   {
-    "id": "Sub_0096F8C40A24",
-    "name": "M5Stack Passive Node",
-    "type": "PASSIVE",
-    "description": "ESP32-based multi-sensor node with LEDs, buzzer, IMU, battery, and microphone.",
-    "price": "2000",
-    "token": "0xdba34672e30cb065b1f93e3ab55318768fd6fef66c15942c9f7cb846e2f900e7::usdc::USDC",
-    "capabilities": [
-      {
-        "id": "skill_vibrate_alert",
-        "name": "Vibrate Alert",
-        "description": "Triggers haptic vibration and red LED flash.",
-        "command": ["VIBRATE_ALERT"]
-      },
-      {
-        "id": "skill_flash_leds",
-        "name": "Flash LEDs",
-        "description": "Flashes the side LEDs blue.",
-        "command": ["FLASH_LEDS"]
-      },
-      {
-        "id": "skill_hardware_demo",
-        "name": "Hardware Demo",
-        "description": "Runs a 2-second rainbow LED animation, vibration, and buzzer tones.",
-        "command": ["HARDWARE_DEMO"]
-      },
-      {
-        "id": "skill_beep",
-        "name": "Beep Speaker",
-        "description": "Plays a tone at a specified frequency on the speaker.",
-        "command": ["BEEP"]
-      },
-      {
-        "id": "skill_read_battery",
-        "name": "Read Battery",
-        "description": "Reads the battery percentage and voltage.",
-        "price": "1000",
-        "command": ["READ_BATTERY"]
-      },
-      {
-        "id": "skill_read_imu",
-        "name": "Read IMU",
-        "description": "Reads the accelerometer data and temperature.",
-        "price": "1000",
-        "command": ["READ_IMU"]
-      },
-      {
-        "id": "skill_read_sound",
-        "name": "Read Sound dB",
-        "description": "Reads the sound pressure level in dB from the microphone.",
-        "price": "1000",
-        "command": ["READ_SOUND"]
-      },
-      {
-        "id": "skill_read_all",
-        "name": "Read All Sensors",
-        "description": "Reads all telemetry data (battery, IMU, sound) at once.",
-        "price": "1000",
-        "command": ["READ_ALL"]
-      }
-    ]
-  },
-  {
-    "id": "Sub_5FE6EC984A4A",
-    "name": "Jetson Nano AI Node",
-    "type": "ACTIVE",
-    "description": "Agentic AI subsystem capable of advanced reasoning, web search, visual inspection, and general conversation.",
-    "price": "3000",
-    "token": "0xdba34672e30cb065b1f93e3ab55318768fd6fef66c15942c9f7cb846e2f900e7::usdc::USDC",
-    "capabilities": [
-      {
-        "id": "skill_search_query",
-        "name": "General Agent Request",
-        "description": "Answers natural-language questions by searching/browsing via the active device pipeline. Can be used for general chat, explanations, and saying hello.",
-        "command": ["SEARCH_QUERY"],
-        "model": "qwen2.5-coder:7b",
-        "system_prompt": "[SYSTEM PROMPT]\nYou are Aether, a friendly and helpful AI assistant. Your primary function is to help users by searching the internet for answers to their general queries.\n[SYSTEM CONTEXT]\nYou have access to the DuckDuckGo internet search tool. Use it whenever you need to find up-to-date information to answer the user's question.\n[USER CONTEXT]\nThe user's specific context sent via the x402 API."
-      }
-    ]
-  },
-  {
-    "id": "Sub_B8023212CFA4",
+    "id": "Sub_6503CAF9C2C7",
     "name": "Robotic Arm",
     "type": "PASSIVE",
     "description": "4-DOF physical robotic manipulator capable of moving to coordinates and actuating a gripper.",
     "price": "2000",
-    "token": "0xdba34672e30cb065b1f93e3ab55318768fd6fef66c15942c9f7cb846e2f900e7::usdc::USDC",
+    "token": "0xa1ec7fc00a6f40db9693ad1415d0c193ad3906494428cf252621037bd7117e29::usdc::USDC",
     "capabilities": [
       {
         "id": "skill_arm_home",
-        "name": "Arm Home",
-        "description": "Smoothly returns all joints to the home (90-degree) pose.",
-        "command": ["ARM_HOME"]
+        "name": "Reset Arm",
+        "description": "Resets the robotic arm to its home position.",
+        "command": ["HOME"]
       },
       {
-        "id": "skill_arm_reach_center",
-        "name": "Arm Reach Center",
-        "description": "Moves the robotic arm to the center forward workspace waypoint.",
-        "command": ["ARM_REACH_CENTER"]
+        "id": "skill_arm_move1",
+        "name": "Arm: Front High",
+        "description": "Moves the robotic arm to the Front High position.",
+        "command": ["MOVE1"]
       },
       {
-        "id": "skill_arm_reach_left",
-        "name": "Arm Reach Left",
-        "description": "Moves the robotic arm to the left workspace waypoint.",
-        "command": ["ARM_REACH_LEFT"]
+        "id": "skill_arm_move2",
+        "name": "Arm: Right Reach",
+        "description": "Moves the robotic arm to the Right Reach position.",
+        "command": ["MOVE2"]
       },
       {
-        "id": "skill_arm_reach_right",
-        "name": "Arm Reach Right",
-        "description": "Moves the robotic arm to the right workspace waypoint.",
-        "command": ["ARM_REACH_RIGHT"]
-      },
-      {
-        "id": "skill_arm_move",
-        "name": "Arm Move Coordinates",
-        "description": "Executes trajectory to move the arm to x, y, z cartesian coordinates with pitch.",
-        "command": ["ARM_MOVE"]
-      },
-      {
-        "id": "skill_arm_gripper",
-        "name": "Arm Gripper Control",
-        "description": "Actuates the gripper claw by setting closure percent (0% open to 100% closed).",
-        "command": ["ARM_GRIPPER"]
+        "id": "skill_arm_move3",
+        "name": "Arm: Right Low",
+        "description": "Moves the robotic arm to the Right Low position.",
+        "command": ["MOVE3"]
       }
     ]
   }

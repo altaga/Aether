@@ -133,11 +133,13 @@ async function main() {
 
   ok('all systems online');
   banner('READY TO SERVE');
-  const base = `http://${settings.http.host}:${settings.http.port}`;
+  const displayHost = settings.http.host === '0.0.0.0' ? 'localhost' : settings.http.host;
+  const base = `http://${displayHost}:${settings.http.port}`;
   log(`  GET   ${base}/                redirects to user page`);
   log(`  GET   ${base}/user            human-readable gateway capabilities`);
   log(`  GET   ${base}/agentic         machine-oriented x402 integration guide`);
-  log(`  POST  ${base}/aether/hire      x402 paid petition → ESP32 turn-on`);
+  log(`  GET   ${base}/aether/agent-guide.json  AI orchestration schema`);
+  log(`  POST  ${base}/aether/hire      x402 paid petition`);
   log(`  GET   ${base}/aether/health    liveness probe`);
   log(`  GET   ${base}/aether/skills    live skill registry`);
   log(`  GET   ${base}/aether/status    full subsystem snapshot`);

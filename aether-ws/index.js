@@ -143,7 +143,17 @@ wss.on("connection", (ws, req) => {
                 console.log(`${logTime()} 🌐 SUPER ADMIN: ${ws.clientId} | IP: ${ws.clientIp}`);
             }
             
-            // B. THE UNIFIED JWT AUTHENTICATION TIER (Gateways, Devices, & Web)
+            // B. PUBLIC READ-ONLY (Digital Twins & Telemetry Viewers)
+            else if (packet.clientId && packet.clientId.startsWith("SimTwin_") && pass === "") {
+                ws.clientId = packet.clientId;
+                ws.isAuthorized = true;
+                ws.isAdmin = false;
+                ws.isSuperAdmin = false;
+                ws.isPublic = true;
+                console.log(`${logTime()} 🌍 PUBLIC CLIENT: ${ws.clientId} Connected.`);
+            }
+            
+            // C. THE UNIFIED JWT AUTHENTICATION TIER (Gateways, Devices, & Web)
             else if (user === "" && pass !== "") {
                 try {
                     const decoded = jwt.verify(pass, SECRET);
@@ -172,6 +182,8 @@ wss.on("connection", (ws, req) => {
                         ws.isAuthorized = true;
                         ws.isAdmin = false;
                         ws.isSuperAdmin = false;
+                        // Append random suffix so infinite users can view the digital twin simultaneously
+                        ws.clientId = `${ws.clientId}_${crypto.randomBytes(4).toString('hex')}`;
                         console.log(`${logTime()} ✅ WEB CLIENT: ${ws.clientId} Connected securely.`);
                     }
 
@@ -217,7 +229,14 @@ wss.on("connection", (ws, req) => {
                     sub.topic === `aether/active/${ws.clientId}/telemetry`      // self-echo (round-trip check)
                 ) {
                     // Edge nodes subscribing to their own downward topics + own telemetry (echo)
+                    // Edge nodes subscribing to their own downward topics + own telemetry (echo)
                     allowed = true;
+                }
+                else if (ws.isPublic) {
+                    // Public viewers can only subscribe to telemetry, not intent
+                    if (topicParts[3] === 'telemetry' || topicParts[3] === 'action') {
+                        allowed = true;
+                    }
                 }
 
                 if (allowed) {
@@ -267,6 +286,15 @@ wss.on("connection", (ws, req) => {
                     packet.topic === `aether/active/${ws.clientId}/receipt` || 
                     packet.topic === `aether/active/${ws.clientId}/telemetry`
                 ) {
+                    allowedToPublish = true;
+                }
+
+                // HACKATHON SIMULATOR EXCEPTION
+                // Allow web-based Digital Twins to publish simulated receipts/telemetry
+                if (ws.clientId.startsWith("SimTwin_") && (
+                    packet.topic.endsWith('/receipt') || 
+                    packet.topic.endsWith('/telemetry')
+                )) {
                     allowedToPublish = true;
                 }
             }

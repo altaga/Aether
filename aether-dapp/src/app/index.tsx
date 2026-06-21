@@ -3,19 +3,7 @@ import logoImage from '../assets/logoAE.png';
 
 // #region debug-point A:index-import-graph
 function __dbgIndex(hypothesisId: string, location: string, msg: string, data: Record<string, unknown> = {}) {
-  fetch('http://127.0.0.1:7777/event', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      sessionId: 'dapp-from-error',
-      runId: 'pre',
-      hypothesisId,
-      location,
-      msg: `[DEBUG] ${msg}`,
-      data,
-      ts: Date.now(),
-    }),
-  }).catch(() => {});
+  // Debug logging disabled in production
 }
 
 function __dbgLiteralResult(moduleName: string, mod: unknown) {
@@ -268,7 +256,8 @@ export default function Index() {
       );
       
       const client = new x402HTTPClient(coreClient);
-      const targetUrl = 'http://localhost:8086/aether/hire';
+      const baseUrl = process.env.EXPO_PUBLIC_GATEWAY_URL || 'https://mainnet-gateway.hackathon.dpdns.org';
+      const targetUrl = `${baseUrl}/aether/hire`;
       
       const petitionPayload = {
         tx_id: `tx_${Date.now()}`,
@@ -473,8 +462,17 @@ export default function Index() {
   const parsePassiveSensors = (data: any) => {
     try {
       if (!data) return;
-      const raw = data?.receipt?.response || data?.receipt;
-      const parsed = typeof raw === 'string' ? JSON.parse(raw) : raw;
+      const receipt = data?.receipt || data;
+      
+      let parsed = null;
+      if (typeof receipt?.status === 'string') {
+        try { parsed = JSON.parse(receipt.status); } catch (e) {}
+      }
+      if (!parsed) {
+        const raw = receipt?.response || receipt;
+        try { parsed = typeof raw === 'string' ? JSON.parse(raw) : raw; } catch (e) {}
+      }
+
       if (parsed && typeof parsed === 'object') {
         setPassiveSensors((prev: any) => ({ ...prev, ...parsed }));
       }
@@ -499,21 +497,6 @@ export default function Index() {
     }
   };
 
-  const runReadSound = async () => {
-    const data = await executePetition(PASSIVE_DEVICE_ID, { command: ['READ_SOUND'] });
-    if (data) {
-      setLastPassiveAction('READ_SOUND');
-      parsePassiveSensors(data);
-    }
-  };
-
-  const runReadAll = async () => {
-    const data = await executePetition(PASSIVE_DEVICE_ID, { command: ['READ_ALL'] });
-    if (data) {
-      setLastPassiveAction('READ_ALL');
-      parsePassiveSensors(data);
-    }
-  };
 
   const runArmCommand = async (command: string) => {
     const data = await executePetition('Sub_B8023212CFA4', { command: [command] });
@@ -685,8 +668,18 @@ export default function Index() {
   };
 
   return (
-    <div style={styles.container}>
-      <header style={styles.header}>
+    <>
+      <style>{`
+        .chat-input:focus {
+          border-color: rgba(52, 199, 89, 0.5) !important;
+        }
+        .chat-send:hover:not(:disabled) {
+          background-color: #E5E5E5 !important;
+          transform: translateY(-1px);
+        }
+      `}</style>
+      <div style={styles.container}>
+        <header style={styles.header}>
         <div style={styles.headerContent}>
           <img src={logoImage} alt="Aether Logo" style={styles.headerLogoImage} />
           <div style={styles.headerTextGroup}>
@@ -760,7 +753,7 @@ export default function Index() {
             <div style={styles.sectionDivider} />
 
             <span style={styles.sectionLabel}>Live Telemetry</span>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginBottom: '16px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px', marginBottom: '16px' }}>
               <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '12px', padding: '12px' }}>
                 <span style={{ fontSize: '11px', color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '8px' }}>Battery</span>
                 <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#E5E7EB' }}>{passiveSensors.battery_pct !== undefined ? `${passiveSensors.battery_pct}%` : '--'}</div>
@@ -773,12 +766,6 @@ export default function Index() {
                   <span>X:{passiveSensors.ax !== undefined ? passiveSensors.ax.toFixed(2) : '-'}</span>
                   <span>Y:{passiveSensors.ay !== undefined ? passiveSensors.ay.toFixed(2) : '-'}</span>
                   <span>Z:{passiveSensors.az !== undefined ? passiveSensors.az.toFixed(2) : '-'}</span>
-                </div>
-              </div>
-              <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '12px', padding: '12px' }}>
-                <span style={{ fontSize: '11px', color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '8px' }}>Sound Level</span>
-                <div style={{ fontSize: '18px', fontWeight: 'bold', color: passiveSensors.sound_db === null ? '#6B7280' : '#E5E7EB' }}>
-                  {passiveSensors.sound_db === null ? 'NO MIC' : passiveSensors.sound_db !== undefined ? `${passiveSensors.sound_db} dB` : '--'}
                 </div>
               </div>
             </div>
@@ -821,20 +808,7 @@ export default function Index() {
               >
                 Read IMU
               </button>
-              <button 
-                style={{...styles.button, flex: '1 1 45%', margin: 0, opacity: (loading || !account) ? 0.5 : 1, cursor: (loading || !account) ? 'not-allowed' : 'pointer'}} 
-                onClick={runReadSound} 
-                disabled={loading || !account}
-              >
-                Read Sound
-              </button>
-              <button 
-                style={{...styles.button, flex: '1 1 45%', margin: 0, opacity: (loading || !account) ? 0.5 : 1, cursor: (loading || !account) ? 'not-allowed' : 'pointer'}} 
-                onClick={runReadAll} 
-                disabled={loading || !account}
-              >
-                Read All
-              </button>
+
             </div>
 
             <div style={styles.sectionDivider} />
@@ -1027,6 +1001,19 @@ export default function Index() {
               </div>
               <p style={styles.cardDesc}>Chat with an orchestration agent. It proposes tool calls, and your wallet signs x402 transactions to execute them on real devices via the gateway.</p>
 
+              <div style={{
+                marginTop: '12px',
+                padding: '12px 14px',
+                backgroundColor: 'rgba(52, 199, 89, 0.05)',
+                borderLeft: '2px solid #34C759',
+                borderRadius: '0 4px 4px 0',
+                fontSize: '12px',
+                color: '#AAA',
+                lineHeight: '1.4'
+              }}>
+                <strong style={{ color: '#E4E4E7', letterSpacing: '0.5px' }}>INSTRUCTIONS:</strong> Instruct the orchestration agent using natural language. The LLM will automatically determine the necessary tool calls and prompt your Sui wallet for execution authorization.
+              </div>
+
               <div style={styles.chatWindow} ref={agentChatScrollRef}>
                 {agentChatHistory.length === 0 ? (
                   <div style={styles.chatEmpty}>Ask the agent to control the ESP32, Robotic Arm, or Active Device.</div>
@@ -1071,8 +1058,29 @@ export default function Index() {
                 )}
               </div>
 
-              <div style={styles.chatInputRow}>
+              <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
+                <button
+                  style={{
+                    backgroundColor: '#161616',
+                    border: '1px solid #2A2A2A',
+                    color: '#AAA',
+                    borderRadius: '4px',
+                    padding: '6px 12px',
+                    fontSize: '11px',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                  }}
+                  onMouseOver={(e) => { e.currentTarget.style.color = '#FFF'; e.currentTarget.style.borderColor = '#444'; }}
+                  onMouseOut={(e) => { e.currentTarget.style.color = '#AAA'; e.currentTarget.style.borderColor = '#2A2A2A'; }}
+                  onClick={() => setAgentPrompt('Move the arm to the Right Reach position, and then return it to the Home position.')}
+                >
+                  ⚡ Example: Sequential Motion
+                </button>
+              </div>
+
+              <div style={{ ...styles.chatInputRow, marginTop: '8px' }}>
                 <input
+                  className="chat-input"
                   style={{ ...styles.chatInput, opacity: (loading || !account) ? 0.5 : 1, cursor: (loading || !account) ? 'not-allowed' : 'text' }}
                   value={agentPrompt}
                   onChange={(e) => setAgentPrompt(e.target.value)}
@@ -1081,6 +1089,7 @@ export default function Index() {
                   placeholder="Message the agent..."
                 />
                 <button
+                  className="chat-send"
                   style={{ ...styles.chatSendButton, opacity: (loading || !account || !agentPrompt.trim()) ? 0.5 : 1, cursor: (loading || !account || !agentPrompt.trim()) ? 'not-allowed' : 'pointer' }}
                   onClick={runAgent}
                   disabled={loading || !account || !agentPrompt.trim()}
@@ -1128,6 +1137,7 @@ export default function Index() {
         </div>
       ) : null}
     </div>
+    </>
   );
 }
 
@@ -1421,82 +1431,88 @@ const styles: Record<string, React.CSSProperties> = {
   chatWindow: {
     flex: 1,
     minHeight: '300px',
-    maxHeight: '300px',
     overflowY: 'auto',
-    backgroundColor: 'transparent',
+    backgroundColor: '#050505',
     border: '1px solid #1A1A1A',
-    borderRadius: '4px',
-    padding: '24px 16px',
+    borderRadius: '6px',
+    padding: '20px',
     display: 'flex',
     flexDirection: 'column',
-    gap: '24px',
+    gap: '16px',
     marginTop: '8px',
   },
   chatEmpty: {
     margin: 'auto',
-    color: '#666',
-    fontSize: '14px',
-    fontWeight: 400,
+    color: '#555',
+    fontSize: '13px',
+    fontWeight: 500,
+    letterSpacing: '0.2px',
   },
   chatBubbleRow: {
     display: 'flex',
     width: '100%',
   },
   chatBubble: {
+    maxWidth: '85%',
+    padding: '12px 16px',
     display: 'flex',
     flexDirection: 'column',
-    gap: '8px',
+    gap: '4px',
   },
   chatBubbleUser: {
-    maxWidth: '75%',
-    backgroundColor: '#262626',
-    borderRadius: '24px',
-    padding: '12px 20px',
+    backgroundColor: '#161616',
+    border: '1px solid #2A2A2A',
+    borderRadius: '6px',
+    borderBottomRightRadius: '2px',
   },
   chatBubbleAgent: {
-    maxWidth: '90%',
     backgroundColor: 'transparent',
-    padding: '4px 0',
+    borderLeft: '2px solid rgba(52, 199, 89, 0.6)',
+    paddingLeft: '14px',
+    paddingTop: '2px',
+    paddingBottom: '2px',
+    paddingRight: '0',
   },
   chatBubbleLabel: {
-    fontSize: '12px',
+    fontSize: '10px',
     color: '#888',
-    fontWeight: 600,
-    letterSpacing: '0.2px',
+    fontWeight: 700,
+    letterSpacing: '1px',
+    textTransform: 'uppercase',
   },
   chatBubbleText: {
-    fontSize: '15px',
-    color: '#F3F3F3',
-    lineHeight: '1.6',
+    fontSize: '13.5px',
+    color: '#E4E4E7',
+    lineHeight: '1.5',
     whiteSpace: 'pre-wrap',
-    letterSpacing: '-0.1px',
   },
   chatInputRow: {
     display: 'flex',
-    gap: '12px',
+    gap: '10px',
     marginTop: '16px',
   },
   chatInput: {
     flex: 1,
-    padding: '16px 20px',
+    padding: '12px 16px',
     border: '1px solid #2A2A2A',
-    borderRadius: '24px',
-    fontSize: '15px',
+    borderRadius: '6px',
+    fontSize: '13.5px',
     fontFamily: 'inherit',
     color: '#FFF',
-    backgroundColor: '#121212',
+    backgroundColor: '#0A0A0A',
     outline: 'none',
+    transition: 'border-color 0.2s ease',
   },
   chatSendButton: {
     backgroundColor: '#FFFFFF',
     color: '#000000',
     border: 'none',
-    borderRadius: '24px',
+    borderRadius: '6px',
     padding: '0 24px',
-    fontSize: '15px',
+    fontSize: '13.5px',
     fontWeight: 600,
     cursor: 'pointer',
-    transition: 'opacity 0.2s ease',
+    transition: 'all 0.2s ease',
   },
   sensorDashboard: {
     display: 'flex',

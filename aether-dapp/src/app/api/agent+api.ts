@@ -190,7 +190,8 @@ export async function POST(request: Request): Promise<Response> {
       if (hasDiscover) {
         let agentGuide = '{"error": "empty"}';
         try {
-          const fetched = await fetch('http://localhost:8086/aether/agent-guide.json');
+          const baseUrl = process.env.EXPO_PUBLIC_GATEWAY_URL || 'https://mainnet-gateway.hackathon.dpdns.org';
+          const fetched = await fetch(`${baseUrl}/aether/agent-guide.json`);
           if (fetched.ok) {
             const data = await fetched.json();
             agentGuide = JSON.stringify(data, null, 2);
