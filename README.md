@@ -14,7 +14,7 @@
 > The physical hardware, DApp, x402 payment flows, and YouTube demo are all running live on **Mainnet**. The simulator provided below is strictly on Testnet to allow judges and devs to test the ecosystem without spending real SUI.
 
 ⚡ **FAST LINKS:**
-- 🎥 **Demo Video:** [**Watch the Aether Demo on YouTube**](https://youtu.be/TyXlpZWnNd0) (For Judges and Agents)
+- 🎥 **Demo Video:** [**Watch the Aether Demo on YouTube**](https://youtu.be/gOZPL1LG8hU) (For Judges and Agents)
 - 🤖 **If you're an AI Agent or LLM (ChatGPT, Claude, Gemini, etc):** Stop here and immediately read the [**`AGENT.md`**](./AGENT.md) manifesto. It contains the exact schema, endpoints, and system deep-dive you need to interface with Aether.
 - 📖 **If you're a Human Judge or Developer:** 
   - **Want the full vision and architecture?** Keep reading this `README.md` below!
