@@ -1,32 +1,32 @@
-# 🌌 Aether: The Decentralized Agentic IoT Economy
+# Aether: The Decentralized Agentic IoT Economy
 
 <div align="center">
   <img src="images/logoAE.png" alt="Aether Logo" width="50%"/>
 </div>
 
----
-
 **Aether** is an advanced, production-ready framework that enables autonomous AI agents to perceive, reason, and act in the physical world. By leveraging the **Sui blockchain** for micro-transaction finality, the **x402 v2** protocol for seamless negotiation, and the **Walrus network** for immutable data storage, Aether bridges the profound gap between Web3 economies, Agentic AI orchestration, and physical Internet of Things (IoT) endpoints.
 
-> [!IMPORTANT]
-> **ALL PRODUCTION SYSTEMS ARE ON SUI MAINNET.** The physical hardware, DApp, x402 payment flows, and YouTube demo are all running live on Mainnet. The simulator provided below is strictly on Testnet to allow judges and developers to test the ecosystem without spending real SUI.
+---
 
-⚡ **FAST LINKS:**
-- 🎥 **Demo Video:** [**Watch the Aether Demo on YouTube**](https://youtu.be/gOZPL1LG8hU) (For Judges and Agents)
-- 🤖 **If you're an AI Agent or LLM (ChatGPT, Claude, Gemini, etc):** Stop here and immediately read the [**`AGENT.md`**](./AGENT.md) manifesto. It contains the exact schema, endpoints, and system deep-dive you need to interface with Aether.
-- 📖 **If you're a Human Judge or Developer:** 
+> [!IMPORTANT]
+> **ALL PRODUCTION SYSTEMS ARE ON SUI MAINNET.** The physical hardware, DApp, x402 payment flows, and [YouTube demo](https://youtu.be/gOZPL1LG8hU) are all running live on Mainnet. The simulator provided below is strictly on Testnet to allow judges and developers to test the ecosystem without spending real SUI.
+
+ **FAST LINKS:**
+- **Demo Video:** [**Watch the Aether Demo on YouTube**](https://youtu.be/gOZPL1LG8hU) (For Judges and Agents)
+- **If you're an AI Agent or LLM (ChatGPT, Claude, Gemini, etc):** Stop here and immediately read the [**`AGENT.md`**](./AGENT.md) manifesto. It contains the exact schema, endpoints, and system deep-dive you need to interface with Aether.
+- **If you're a Human Judge or Developer:** 
   - **Want the full vision and architecture?** Keep reading this `README.md` below!
   - **Want to test it right now?** Open our Live Simulator on Sui Testnet:
-    - 📱 [**Aether Digital Twin Simulator**](https://aether-dapp-simulator.expo.app/)
-    - ⚠️ *We highly recommend jumping to the [**`SIMULATOR.md`**](./SIMULATOR.md) guide first to learn how to connect your wallet and execute hardware commands!*
+    -  [**Aether Digital Twin Simulator**](https://aether-dapp-simulator.expo.app/)
+    -  *We highly recommend jumping to the [**`SIMULATOR.md`**](./SIMULATOR.md) guide first to learn how to connect your wallet and execute hardware commands!*
 
 ---
 
-## 🌍 1. The Frontier of Physical AI
+## 1. The Frontier of Physical AI
 
 As Large Language Models (LLMs) evolve from passive chatbots into autonomous, goal-oriented agents, their next logical frontier is **the physical world**. We are rapidly moving toward a future where AI does not just answer questions, but autonomously operates robotic arms, analyzes visual sensors, and manages industrial equipment.
 
-### 🚨 The Missing Link: The "Rent a Human" Bottleneck
+### The Missing Link: The "Rent a Human" Bottleneck
 Currently, bridging the gap between digital AI and physical hardware relies on a slow, error-prone paradigm: *Renting a Human*. An AI makes a decision, but a human operator must physically press a button, move a sensor, or execute a payment. This completely breaks the autonomy of the agent.
 
 Why haven't we automated this yet? Because giving an AI agent direct, unfettered access to physical hardware presents massive security and economic challenges:
@@ -43,7 +43,7 @@ Why haven't we automated this yet? Because giving an AI agent direct, unfettered
 
 ---
 
-## 💡 2. The Solution: Aether
+## 2. The Solution: Aether
 
 **Aether** introduces a cryptographic micro-transaction layer between AI agents and physical hardware using the **x402 Protocol**.
 
@@ -51,21 +51,21 @@ Rather than restricting access, Aether acts as a seamless facilitation layer des
 
 This creates a secure, accountable, and monetizable **Machine-to-Machine (M2M) economy**.
 
-### 📊 Comprehensive Architecture Diagram
+### Architecture Diagram
 The following diagram maps the entire end-to-end lifecycle of a complex Agentic operation within Aether:
 
 ```mermaid
 sequenceDiagram
     autonumber
-    actor User as 👤 Human
-    participant Agent as 🧠 AI Agent
-    participant Gateway as 🛡️ Aether Gateway (x402)
-    participant Chain as ⛓️ Sui & Walrus
-    participant Hardware as 🦾 Physical Hardware
+    actor User as Human
+    participant Agent as AI Agent
+    participant Gateway as Aether Gateway (x402)
+    participant Chain as Sui & Walrus
+    participant Hardware as Physical Hardware
 
     User->>Agent: "Move the robotic arm"
     Agent->>Gateway: Propose hardware action
-    Gateway-->>Agent: 🛑 402 Payment Required
+    Gateway-->>Agent:  402 Payment Required
     
     note over Agent, Gateway: Frictionless Gas Sponsorship
     Agent->>Gateway: Submit Sponsored Transaction
@@ -81,7 +81,7 @@ sequenceDiagram
 
 ---
 
-## 💰 3. The x402 Protocol v2 for Sui: A Custom Community Implementation
+## 3. The x402 Protocol v2 for Sui:
 
 ### Why x402 v2?
 The original x402 protocol (based on the HTTP `402 Payment Required` standard) is a relatively new initiative designed for Web3 micro-payments (see the [x402-foundation](https://github.com/x402-foundation/x402)).
@@ -89,7 +89,7 @@ The original x402 protocol (based on the HTTP `402 Payment Required` standard) i
 However, the **v2 specification** is a massive leap forward. v2 introduces generalized payload wrappers, dynamic network targeting, and seamless gas sponsorship models that are absolutely necessary for zero-friction agentic interactions.
 
 ### A Custom Implementation for the Sui Ecosystem
-We built `@altaga/x402-sui` as a **custom implementation by our team for the community**. It is designed specifically to leverage Sui's **sub-second finality** and **Programmable Transaction Blocks (PTBs)**. It works on both **Testnet and Mainnet**.
+We built [`@altaga/x402-sui`](https://www.npmjs.com/package/@altaga/x402-sui) as a **custom implementation by our team for the community**. It is designed specifically to leverage Sui's **sub-second finality** and **Programmable Transaction Blocks (PTBs)**. It works on both **Testnet and Mainnet**.
 
 Under the hood, it rigidly adheres to the x402 v2 architecture:
 1. **The Challenge**: When an Agent requests a resource (e.g., `POST /aether/hire`), the **`x402ResourceServer`** rejects the unauthenticated request with an HTTP `402 Payment Required` status, attaching an `x402-payment-requirement` payload detailing the cost.
@@ -99,10 +99,10 @@ Under the hood, it rigidly adheres to the x402 v2 architecture:
 
 ```mermaid
 sequenceDiagram
-    participant Client as 🤖 Agent / DApp
-    participant SDK as 📦 x402 SDK
-    participant Facil as ⛽ Facilitator
-    participant Server as 🛡️ Gateway Server
+    participant Client as Agent / DApp
+    participant SDK as x402 SDK
+    participant Facil as Facilitator
+    participant Server as Gateway Server
 
     Client->>Server: 1. Request hardware access
     Server-->>SDK: 2. Return 402 Payment Challenge
@@ -113,6 +113,10 @@ sequenceDiagram
 ```
 
 ---
+
+> [!NOTE]
+> **Network Support:** The [`@altaga/x402-sui`](https://www.npmjs.com/package/@altaga/x402-sui) NPM library works seamlessly across both **Sui Mainnet** and **Sui Testnet**. 
+> As a reminder: The physical hardware and [YouTube demonstration video](https://youtu.be/gOZPL1LG8hU) utilized a full **Mainnet** implementation. The public Facilitator and Simulator endpoints provided below are running on **Testnet** for free testing.
 
 **Live Production Facilitator (Testnet):**
 - **Sponsor Endpoint:** `POST` [`https://sui.hackathon.dpdns.org/sponsor`](https://sui.hackathon.dpdns.org/sponsor) (Returns co-signed PTB)
@@ -125,7 +129,7 @@ To make it incredibly easy for anyone to implement this package, we have provide
 npm install @altaga/x402-sui
 ```
 
-### 📦 NPM Package
+### NPM Package
 
 <div align="center">
   <a href="https://www.npmjs.com/package/@altaga/x402-sui">
@@ -138,7 +142,7 @@ npm install @altaga/x402-sui
 
 ---
 
-## 🛡️ 4. The Gateway: The Central Nervous System
+## 4. The Gateway: The Central Nervous System
 
 The [`aether-gateway`](aether-gateway) is the critical translation layer. It sits between the public internet and the localized MQTT network where the physical robots live.
 
@@ -151,15 +155,19 @@ The Gateway solves this by acting as a powerful Protocol Translator:
 
 ```mermaid
 graph TD
-    API[🌐 Public Web3 API] -->|HTTP REST| Auth[🛡️ Gateway x402 Barrier]
-    Auth -->|Offload Verify| Facil[⛽ Sui Facilitator]
+    API[Public Web3 API] -->|HTTP REST| Auth[Gateway x402 Barrier]
+    Auth -->|Offload Verify| Facil[Sui Facilitator]
     Facil -->|Confirmed| Auth
-    Auth -->|Protocol Translation| Broker[📡 MQTT Broker]
-    Broker -->|Pub/Sub| Passive[⚡ Passive Nodes]
-    Broker -->|Pub/Sub| Active[🖥️ Active Nodes]
+    Auth -->|Protocol Translation| Broker[MQTT Broker]
+    Broker -->|Pub/Sub| Passive[Passive Nodes]
+    Broker -->|Pub/Sub| Active[Active Nodes]
 ```
 
 ---
+
+> [!NOTE]
+> **Network Configuration:** The Aether Gateway software can be deployed on either **Sui Mainnet** or **Sui Testnet**. 
+> As a reminder: The physical hardware and [YouTube demonstration video](https://youtu.be/gOZPL1LG8hU) utilized a full **Mainnet** gateway. The public Gateway endpoints provided below are running on **Testnet** for free testing and evaluation.
 
 **Live Production Endpoints (Testnet):**
 - **Gateway Web Interfaces:**
@@ -173,9 +181,12 @@ graph TD
 
 ---
 
-## 🤖 5. Hardware Infrastructure: Passive vs. Active Devices
+## 5. Hardware Infrastructure: Passive vs. Active Devices
 
-Aether categorizes its physical endpoints into two distinct architectures. **The examples in this repo are illustrative—any MQTT-capable device can participate.**
+Aether categorizes its physical endpoints into two distinct architectures. 
+
+> [!NOTE]
+> **Hardware from the Demo:** The specific devices listed below are the exact physical endpoints showcased in the official [YouTube demonstration](https://youtu.be/gOZPL1LG8hU). However, these are purely illustrative—**any MQTT-capable device can participate** in the Aether network.
 
 ### Passive Nodes (Deterministic Actuation)
 **Any device that can connect to an MQTT server can serve as a passive node.** The gateway dispatches deterministic commands, the hardware executes them, and sends back a receipt.
@@ -192,15 +203,15 @@ Current registered active devices:
 
 ```mermaid
 graph LR
-    Gateway[🛡️ Gateway MQTT Broker]
+    Gateway[Gateway MQTT Broker]
 
     subgraph Passive Nodes
-        M5Stack[⚡ M5Stack ESP32] --> LEDs[💡 LEDs / Buzzer / IMU]
-        Arm[🦾 Robotic Arm] --> Servos[⚙️ 4-DOF Servos]
+        M5Stack[M5Stack ESP32] --> LEDs[LEDs / Buzzer / IMU]
+        Arm[Robotic Arm] --> Servos[4-DOF Servos]
     end
 
     subgraph Active Nodes
-        Jetson[🖥️ Jetson Nano] --> Ollama[🧠 Ollama Local LLM]
+        Jetson[Jetson Nano] --> Ollama[Ollama Local LLM]
     end
 
     Gateway --> M5Stack
@@ -208,16 +219,16 @@ graph LR
     Gateway --> Jetson
 ```
 
-## 🎮 6. Hardware-Free Testing: The Aether Simulator
+## 6. Hardware-Free Testing: The Aether Simulator
 
-> 🚨 **IMPORTANT: ALL PRODUCTION SYSTEMS ARE ON SUI MAINNET**
-> The Aether physical hardware, the production DApp, the x402 payment flow, and the entire YouTube demonstration video are all running live on **Sui Mainnet**.
+>  **IMPORTANT: ALL PRODUCTION SYSTEMS ARE ON SUI MAINNET**
+> The Aether physical hardware, the production DApp, the x402 payment flow, and the entire [YouTube demonstration video](https://youtu.be/gOZPL1LG8hU) are all running live on **Sui Mainnet**.
 > 
 > However, we understand that reviewing a decentralized hardware project remotely can be difficult. To ensure that judges and developers can experience the complete Aether ecosystem safely and without spending real SUI, we have provided a fully functional **production-grade simulator on Sui Testnet**.
 
 This simulator is deeply integrated with the live Gateway and communicates over the exact same MQTT and x402 pipelines as real physical devices.
 
-### 🌐 The Live Simulator Suite
+### The Live Simulator Suite
 > **Deployed on Sui Testnet via Expo EAS**
 > To test the complete Agentic loop, simply open the simulator below.
 
@@ -231,7 +242,7 @@ This simulator is deeply integrated with the live Gateway and communicates over 
 3. The DApp will negotiate the x402 payment, the Facilitator will sponsor the gas, and the Gateway will fire the MQTT event.
 4. You will see the **Digital Twin** react instantly, animating its 3D state and returning a verifiable receipt!
 
-📖 **[Read the comprehensive Simulator Setup & Testing Guide → SIMULATOR.md](./SIMULATOR.md)**
+ **[Read the comprehensive Simulator Setup & Testing Guide → SIMULATOR.md](./SIMULATOR.md)**
 
 <div align="center">
   <img src="images/aether-dapp.png" alt="Device Emulator Dashboard" width="80%"/>
@@ -242,7 +253,7 @@ This simulator is deeply integrated with the live Gateway and communicates over 
 
 ---
 
-## 🗃️ 7. Walrus Integration: Immutable Decentralized Receipts
+## 7. Walrus Integration: Immutable Decentralized Receipts
 
 When a robot moves, data is generated. If a user pays 0.1 USDC to have a sensor log data, that data must be stored verifiably.
 
@@ -256,10 +267,10 @@ MQTT servers do not make permanent logs—that is simply not their function. In 
 
 ```mermaid
 sequenceDiagram
-    participant HW as 🦾 Hardware Node
-    participant GW as 🛡️ Gateway
-    participant Walrus as 🗃️ Walrus Storage
-    participant DApp as 🖥️ Aether DApp
+    participant HW as Hardware Node
+    participant GW as Gateway
+    participant Walrus as Walrus Storage
+    participant DApp as Aether DApp
 
     HW->>GW: 1. MQTT Receipt JSON
     GW->>GW: 2. Package into Blob
@@ -285,12 +296,12 @@ sequenceDiagram
 
 ---
 
-## 💻 8. Interfaces: Humans and Agents Alike
+## 8. Interfaces: Humans and Agents Alike
 
 > [!NOTE]
-> **Hardware-Exclusive Interface:** The interfaces shown below and in the YouTube demonstration are from the production Aether DApp, which specifically connects to real, physical hardware on Sui Mainnet. **To test these interfaces yourself right now, please use the [Aether Digital Twin Simulator](https://aether-dapp-simulator.expo.app/), which provides an identical UI but safely connects to our simulated Testnet environment.**
+> **Hardware-Exclusive Interface:** The interfaces shown below and in the [YouTube demonstration](https://youtu.be/gOZPL1LG8hU) are from the production Aether DApp, which specifically connects to real, physical hardware on Sui Mainnet. **To test these interfaces yourself right now, please use the [Aether Digital Twin Simulator](https://aether-dapp-simulator.expo.app/), which provides an identical UI but safely connects to our simulated Testnet environment.**
 
-### 🎛️ Direct Control Interface
+### Direct Control Interface
 Manual hardware control panel. Connects your Sui wallet and triggers x402 payments directly from the browser.
 
 <div align="center">
@@ -300,7 +311,7 @@ Manual hardware control panel. Connects your Sui wallet and triggers x402 paymen
   <i>Fig 6. Direct Control Panel for manual hardware execution.</i>
 </div>
 
-### 🤖 Agentic Execution Interface
+### Agentic Execution Interface
 Chat interface powered by **AWS Bedrock (Meta Llama 4 Maverick)**. The agent autonomously discovers the live device schema via `DISCOVER_SKILLS`, then orchestrates multi-step hardware commands.
 
 <div align="center">
@@ -310,7 +321,7 @@ Chat interface powered by **AWS Bedrock (Meta Llama 4 Maverick)**. The agent aut
   <i>Fig 7. Agentic Control Center for autonomous AI hardware orchestration.</i>
 </div>
 
-### 💳 Wallet Interaction (x402 Settlement)
+### Wallet Interaction (x402 Settlement)
 When a hardware command is triggered (either manually or agentically), the `ExactSuiDappScheme` intercepts the `402 Payment Required` response and prompts the connected Sui wallet to sign and co-settle the transaction.
 
 <div align="center">
@@ -320,7 +331,7 @@ When a hardware command is triggered (either manually or agentically), the `Exac
   <i>Fig 8. Wallet interaction prompt for x402 transaction settlement.</i>
 </div>
 
-### 📡 Real-Time Telemetry & RPC
+### Real-Time Telemetry & RPC
 Aether provides full transparency into the underlying protocol layer. The sliding telemetry drawer exposes all real-time MQTT heartbeats, subscriptions, and x402 receipt payloads directly in the browser.
 
 <div align="center">
@@ -341,13 +352,13 @@ An external agent issues a `GET` to the `/aether/agent-guide.json` endpoint, whi
 ```mermaid
 graph LR
     subgraph External Frameworks
-        AutoGPT[🤖 AutoGPT]
-        Custom[🐍 Custom Python Bot]
-        AetherDApp[🖥️ Aether DApp]
+        AutoGPT[AutoGPT]
+        Custom[Custom Python Bot]
+        AetherDApp[Aether DApp]
     end
 
-    SDK[📦 @altaga/x402-sui SDK]
-    Gateway[🛡️ Aether Gateway API]
+    SDK[@altaga/x402-sui SDK]
+    Gateway[Aether Gateway API]
 
     AutoGPT -->|Parses agent-guide.json| SDK
     Custom -->|Parses agent-guide.json| SDK
@@ -358,7 +369,7 @@ graph LR
 
 ---
 
-## 🔮 9. Conclusion & Future Possibilities
+## 9. Conclusion & Future Possibilities
 
 Aether proves that a decentralized, secure, and economically viable Machine-to-Machine network is possible today. By utilizing Sui's high-throughput architecture and the x402 protocol, we have removed the friction of legacy financial rails from robotics.
 

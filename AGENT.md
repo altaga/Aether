@@ -1,11 +1,11 @@
-# 🤖 AGENT.md: Aether System Deep Dive
+# AGENT.md: Aether System Deep Dive
 
-For AI agents (and developers) reviewing the architecture, here is a precise breakdown of every major module and its critical files, along with the live production infrastructure endpoints. Note that all **simulator packages** (`*-simulator`) are excluded from the public repo per `.gitignore` and run as independent Expo deployments.
+For AI agents (and developers) reviewing the architecture, here is a precise breakdown of every major module and its critical files, along with the live production infrastructure endpoints. This repository also includes the **simulator packages** (`*-simulator`) which provide a fully functional Testnet reflection of the Mainnet architecture for safe testing.
 
-## 🛠️ Technology Stack & Packages
+## Technology Stack & Packages
 
 Before diving into the modules, here is the core technology stack and standard packages powering the Aether ecosystem:
-- **Blockchain & Economics**: [Sui Network](https://sui.io/) (Testnet), `@mysten/sui` TypeScript SDK, and our custom `@altaga/x402-sui` SDK for L402 payment negotiation.
+- **Blockchain & Economics**: [Sui Network](https://sui.io/) (Mainnet for production, Testnet for simulators), `@mysten/sui` TypeScript SDK, and our custom `@altaga/x402-sui` SDK for L402 payment negotiation.
 - **Decentralized Storage**: [Walrus Network](https://walrus.xyz/) (used to store immutable hardware telemetry receipts).
 - **AI & Orchestration**: AWS Bedrock (`us.meta.llama3-2-90b-instruct-v1:0` / Llama Maverick) for the cloud DApp agent, and [Ollama](https://ollama.com/) (`qwen2.5-coder:7b`) for localized edge AI nodes.
 - **IoT & Networking**: MQTT over WebSockets (`mqtt.js`, custom `aether-ws` broker), and C++ Arduino Core for physical microcontrollers (ESP32 / M5Stack).
@@ -14,7 +14,7 @@ Before diving into the modules, here is the core technology stack and standard p
 
 ---
 
-## 🗂️ Module & File Breakdown
+## Module & File Breakdown
 
 ### A. `@altaga/x402-sui` (The Core Protocol SDK)
 This is the foundational package that implements the x402 standard specifically for the Sui blockchain. It handles all the heavy lifting for PTB creation, gas sponsorship, and on-chain settlement.
@@ -132,13 +132,21 @@ node Seller/index.mjs        # Terminal 2
 node Buyer/index.mjs         # Terminal 3
 ```
 
+### H. Simulators (The Testnet Sandbox)
+
+A set of mirror packages deployed strictly on **Sui Testnet** that replicate the Mainnet hardware infrastructure.
+
+- **[`aether-dapp-simulator`](aether-dapp-simulator)**: The unified Digital Twin interface. Combines the DApp Orchestrator logic with an integrated 3D WebGL robotic arm twin that receives MQTT intents and publishes Walrus receipts.
+- **[`aether-gateway-simulator`](aether-gateway-simulator)**: A mirrored Gateway routing Testnet transactions.
+- **[`aether-sui-facilitator-simulator`](aether-sui-facilitator-simulator)**: A mirrored gas station sponsoring Testnet transactions.
+
 ---
 
-## 🌐 Live Production Infrastructure
+## Live Infrastructure Endpoints
 
-All Testnet services are **deployed and live**. Open these URLs directly in your browser to inspect the running system.
+All Testnet simulation services are **deployed and live**. Open these URLs directly in your browser to inspect the running system.
 
-### 🛡️ Simulator Gateway — `simgate.hackathon.dpdns.org`
+### Simulator Gateway — `simgate.hackathon.dpdns.org`
 
 | Endpoint | Link | Returns |
 |---|---|---|
@@ -146,7 +154,7 @@ All Testnet services are **deployed and live**. Open these URLs directly in your
 | Status | `GET` [/aether/status](https://simgate.hackathon.dpdns.org/aether/status) | Broker state, supervised device count, in-flight requests |
 | Agent Guide | `GET` [/aether/agent-guide.json](https://simgate.hackathon.dpdns.org/aether/agent-guide.json) | Full live LLM-readable device schema (hardware targets, commands, pricing) |
 
-### ⛽ Sui Facilitator — `sui.hackathon.dpdns.org`
+### Sui Facilitator — `sui.hackathon.dpdns.org`
 
 | Endpoint | Link | Returns |
 |---|---|---|
@@ -154,4 +162,4 @@ All Testnet services are **deployed and live**. Open these URLs directly in your
 | Sponsor | `POST` [/sponsor](https://sui.hackathon.dpdns.org/sponsor) | Co-signed PTB (called automatically by DApp) |
 | Settle | `POST` [/settle](https://sui.hackathon.dpdns.org/settle) | On-chain Testnet settlement (called automatically by DApp) |
 
-📖 **[Full endpoint documentation with example responses → SIMULATORS.md](./SIMULATORS.md)**
+ **[Full Simulator Setup & Testing Guide → SIMULATOR.md](./SIMULATOR.md)**

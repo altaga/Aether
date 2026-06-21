@@ -1,4 +1,4 @@
-# 🖥️ Aether Simulator — Complete Usage Guide
+# Aether Simulator — Complete Usage Guide
 
 <div align="center">
   <img src="images/logoAE.png" alt="Aether Logo" width="40%"/>
@@ -6,11 +6,11 @@
 
 ---
 
-> 🚨 **IMPORTANT: ALL PRODUCTION SYSTEMS ARE ON SUI MAINNET.** The physical Aether hardware, production DApp, and video demo all run live on Mainnet. However, to allow judges to test the system safely without spending real SUI, this guide walks you through using the **production-grade Aether simulator** deployed on **Sui Testnet**. No physical hardware is required, but it faithfully replicates the full Mainnet Agentic IoT economy loop: wallet connection → x402 payment → MQTT command dispatch → hardware receipt → Walrus archive.
+>  **IMPORTANT: ALL PRODUCTION SYSTEMS ARE ON SUI MAINNET.** The physical Aether hardware, production DApp, and video demo all run live on Mainnet. However, to allow judges to test the system safely without spending real SUI, this guide walks you through using the **production-grade Aether simulator** deployed on **Sui Testnet**. No physical hardware is required, but it faithfully replicates the full Mainnet Agentic IoT economy loop: wallet connection → x402 payment → MQTT command dispatch → hardware receipt → Walrus archive.
 
 ---
 
-## ⚡ Quick Start (2 minutes)
+## Quick Start (2 minutes)
 
 | Step | What to do |
 |---|---|
@@ -22,36 +22,36 @@
 
 ---
 
-## 🗺️ Architecture Overview
+## Architecture Overview
 
 When you use the simulator, this is what actually happens behind the scenes:
 
 ```mermaid
 graph TD
-    User([👤 You]) --> DApp[📱 Unified Simulator UI]
-    DApp <--> Wallet[👛 Sui Testnet Wallet]
+    User([You]) --> DApp[Unified Simulator UI]
+    DApp <--> Wallet[Sui Testnet Wallet]
     
-    DApp -- "HTTP/x402" --> Gateway[🛡️ Simulator Gateway<br>simgate.hackathon.dpdns.org]
+    DApp -- "HTTP/x402" --> Gateway[Simulator Gateway<br>simgate.hackathon.dpdns.org]
     
-    Gateway <--> Broker[📡 MQTT Broker<br>wss://mqtt.hackathon.dpdns.org]
+    Gateway <--> Broker[MQTT Broker<br>wss://mqtt.hackathon.dpdns.org]
     
-    Broker <--> Twin[🦾 Digital Twin Engine<br>Acts as hardware]
+    Broker <--> Twin[Digital Twin Engine<br>Acts as hardware]
     
-    Twin -. "Saves Receipts" .-> Walrus[🗃️ Walrus Testnet Storage]
+    Twin -. "Saves Receipts" .-> Walrus[Walrus Testnet Storage]
 ```
 
 The **Digital Twin Engine** connects to the same MQTT broker as the real hardware. When the DApp triggers a command, the Twin receives it, animates its 3D visualization, processes it, and returns a receipt — exactly like a physical device would.
 
 ---
 
-## 🔧 Prerequisites
+## Prerequisites
 
 ### 1. Install a Sui Wallet
 
 You need a Sui-compatible browser extension wallet. The simulator is configured to only accept wallets with Sui features.
 
 **Recommended wallets:**
-- [Slush Wallet](https://slush.app/) — Chrome ⭐ **Recommended**
+- [Slush Wallet](https://slush.app/) — Chrome  **Recommended**
 - [Suiet Wallet](https://suiet.app/) — Chrome/Firefox
 - [Sui Wallet (official)](https://chrome.google.com/webstore/detail/sui-wallet/opcgpfmipidbgpenhmajoajpbobppdil) — Chrome
 
@@ -82,11 +82,11 @@ Aether uses **USDC (Testnet)** as the payment token for x402 transactions. The t
 1. Visit the [Sui Testnet Faucet](https://faucet.testnet.sui.io/)
 2. Or use a testnet DEX swap to convert Testnet SUI → Testnet USDC
 
-> 💡 Each hardware command costs between **1,000–3,000 USDC base units** (0.001–0.003 USDC). A small balance goes a long way.
+>  Each hardware command costs between **1,000–3,000 USDC base units** (0.001–0.003 USDC). A small balance goes a long way.
 
 ---
 
-## 📺 The Simulator Interface
+## The Simulator Interface
 
 **URL:** [https://aether-dapp-simulator.expo.app/](https://aether-dapp-simulator.expo.app/)
 
@@ -122,7 +122,7 @@ The simulator combines the **DApp Control Center** (Left) and the **Hardware Dig
 
 ### The Dual-Panel Dashboard
 
-#### 🎛️ Left Panel — DApp Control Center
+#### Left Panel — DApp Control Center
 This is the command interface, identical to the production Aether web app. It bridges human intent with the decentralized network.
 
 It features two operating modes:
@@ -145,7 +145,7 @@ Autonomous AI orchestration. Describe your intent in natural language (e.g., *"M
   <i>Fig 4. The Agentic Sequence Planner visually executing a multi-step robotic sequence.</i>
 </div>
 
-#### 🦾 Right Panel — Hardware Digital Twin
+#### Right Panel — Hardware Digital Twin
 **Node ID:** `Sub_6503CAF9C2C7`
 
 <div align="center">
@@ -181,18 +181,18 @@ Click **`OPEN TELEMETRY`** in the top-right to open a full-width sliding drawer.
 
 ---
 
-## 🕹️ Step 1 — Connect Your Wallet
+## Step 1 — Connect Your Wallet
 
 1. Click the **Connect** button in the top-right corner of the simulator.
 2. Select your wallet from the list (only Sui-compatible wallets appear).
 3. Approve the connection request in your wallet extension.
 4. Your wallet address will appear in the button.
 
-> ⚠️ If you see "Unlock or finish setting up your Sui wallet", your wallet is installed but locked. Open the extension and unlock it first.
+>  If you see "Unlock or finish setting up your Sui wallet", your wallet is installed but locked. Open the extension and unlock it first.
 
 ---
 
-## 🎮 Direct Control Tab
+## Direct Control Tab
 
 On the left side of the screen, you will find the DApp Control Center. It has two operating modes: **Direct Control** and **Agent**.
 
@@ -215,11 +215,11 @@ In Direct Control mode, you trigger a specific pre-defined command and sign an x
 
 ---
 
-## 🤖 Agent Tab
+## Agent Tab
 
 Fully autonomous AI orchestration. Instead of manually picking commands, you describe what you want in natural language and the **AWS Bedrock (Meta Llama 4 Maverick)** agent decides which hardware to invoke and in what sequence.
 
-### ⚡ Agentic Sequential Planner
+### Agentic Sequential Planner
 
 The Simulator features 1:1 visual parity with the production DApp's sequence execution planner. When the AI determines that a task requires multiple physical steps, it generates a sequential execution plan.
 
@@ -230,9 +230,9 @@ The Simulator features 1:1 visual parity with the production DApp's sequence exe
 3. The DApp renders a dark, premium **Execution Plan Card** in the chat, listing all pending steps.
 4. The DApp iterates through the tool calls sequentially. For each step:
    - You sign a specific x402 transaction for that step.
-   - The UI status indicator shifts from grey `PENDING` to cyan `⚡ RUNNING`.
+   - The UI status indicator shifts from grey `PENDING` to cyan ` RUNNING`.
    - The physical/simulated device executes the movement.
-   - Upon completion, the status shifts to a green `✓ SUCCESS`.
+   - Upon completion, the status shifts to a green ` SUCCESS`.
 5. Once all steps complete, the agent emits a final success summary.
 
 ### Example prompts to try
@@ -251,7 +251,7 @@ The Simulator features 1:1 visual parity with the production DApp's sequence exe
 
 ---
 
-## 📋 The Complete Transaction Lifecycle
+## The Complete Transaction Lifecycle
 
 When you trigger a manual action or the AI agent orchestrates a tool call, the following end-to-end lifecycle executes. Thanks to Sui's sub-second finality and the Aether Gateway's automated x402 negotiation, this entire process occurs autonomously within **2 to 4 seconds**, requiring zero human intervention:
 
@@ -298,7 +298,7 @@ When you trigger a manual action or the AI agent orchestrates a tool call, the f
 
 ---
 
-## 🔍 Verifying Your Transactions
+## Verifying Your Transactions
 
 Every successful hardware command instantly generates a toast notification containing direct links to two verifiable on-chain artifacts.
 
@@ -334,7 +334,7 @@ Click **"Open Walrus Explorer"** in the toast to view the raw JSON telemetry rec
 
 ---
 
-## 🛠️ Troubleshooting
+## Troubleshooting
 
 | Problem | Likely Cause | Solution |
 |---|---|---|
@@ -349,11 +349,11 @@ Click **"Open Walrus Explorer"** in the toast to view the raw JSON telemetry rec
 
 ---
 
-## 🌐 Live Infrastructure — Open in Your Browser
+## Live Infrastructure — Open in Your Browser
 
 All services below are **deployed and live right now**. You can open each URL directly in your browser to verify the system is running.
 
-### 🛡️ Simulator Gateway (`simgate.hackathon.dpdns.org`)
+### Simulator Gateway (`simgate.hackathon.dpdns.org`)
 
 The Aether Gateway Simulator is the x402 enforcement layer for the Testnet environment. It is connected to **3 supervised simulated devices** via the MQTT broker.
 
@@ -398,7 +398,7 @@ The Aether Gateway Simulator is the x402 enforcement layer for the Testnet envir
 
 ---
 
-### ⛽ Sui Facilitator (`sui.hackathon.dpdns.org`)
+### Sui Facilitator (`sui.hackathon.dpdns.org`)
 
 The Facilitator is the **gas sponsorship service** — it co-signs every x402 Programmable Transaction Block so users pay zero SUI gas. It runs on Sui **Testnet**.
 
@@ -413,7 +413,7 @@ The Facilitator is the **gas sponsorship service** — it co-signs every x402 Pr
 
 ---
 
-## 🔧 Full Service Reference
+## Full Service Reference
 
 | Service | URL | Network |
 |---|---|---|
