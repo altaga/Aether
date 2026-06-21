@@ -6,7 +6,8 @@
 
 ---
 
->  **IMPORTANT: ALL PRODUCTION SYSTEMS ARE ON SUI MAINNET.** The physical Aether hardware, production DApp, and video demo all run live on Mainnet. However, to allow judges to test the system safely without spending real SUI, this guide walks you through using the **production-grade Aether simulator** deployed on **Sui Testnet**. No physical hardware is required, but it faithfully replicates the full Mainnet Agentic IoT economy loop: wallet connection → x402 payment → MQTT command dispatch → hardware receipt → Walrus archive.
+> [!CAUTION]
+> **IMPORTANT: ALL PRODUCTION SYSTEMS ARE ON SUI MAINNET.** The physical Aether hardware, production DApp, and video demo all run live on Mainnet. However, to allow judges to test the system safely without spending real SUI, this guide walks you through using the **production-grade Aether simulator** deployed on **Sui Testnet**. No physical hardware is required, but it faithfully replicates the full Mainnet Agentic IoT economy loop: wallet connection → x402 payment → MQTT command dispatch → hardware receipt → Walrus archive.
 
 ---
 
@@ -55,6 +56,7 @@ You need a Sui-compatible browser extension wallet. The simulator is configured 
 - [Suiet Wallet](https://suiet.app/) — Chrome/Firefox
 - [Sui Wallet (official)](https://chrome.google.com/webstore/detail/sui-wallet/opcgpfmipidbgpenhmajoajpbobppdil) — Chrome
 
+> [!NOTE]
 > After installing, create a new wallet and **write down your seed phrase safely**.
 
 ### 2. Switch to Testnet
@@ -82,7 +84,8 @@ Aether uses **USDC (Testnet)** as the payment token for x402 transactions. The t
 1. Visit the [Sui Testnet Faucet](https://faucet.testnet.sui.io/)
 2. Or use a testnet DEX swap to convert Testnet SUI → Testnet USDC
 
->  Each hardware command costs between **1,000–3,000 USDC base units** (0.001–0.003 USDC). A small balance goes a long way.
+> [!NOTE]
+> Each hardware command costs between **1,000–3,000 USDC base units** (0.001–0.003 USDC). A small balance goes a long way.
 
 ---
 
@@ -188,7 +191,8 @@ Click **`OPEN TELEMETRY`** in the top-right to open a full-width sliding drawer.
 3. Approve the connection request in your wallet extension.
 4. Your wallet address will appear in the button.
 
->  If you see "Unlock or finish setting up your Sui wallet", your wallet is installed but locked. Open the extension and unlock it first.
+> [!NOTE]
+> If you see "Unlock or finish setting up your Sui wallet", your wallet is installed but locked. Open the extension and unlock it first.
 
 ---
 
@@ -247,7 +251,8 @@ The Simulator features 1:1 visual parity with the production DApp's sequence exe
 ```
 → Agent sequences 2 tool calls: `ON` then `READ_SENSORS` (2 transactions to sign).
 
-> **Note**: For each tool call the agent generates, you will need to sign a wallet transaction. Multi-step commands require multiple signatures, but the visual sequence planner tracks your progress through the entire macro operation!
+> [!NOTE]
+> For each tool call the agent generates, you will need to sign a wallet transaction. Multi-step commands require multiple signatures, but the visual sequence planner tracks your progress through the entire macro operation!
 
 ---
 
@@ -409,6 +414,7 @@ The Facilitator is the **gas sponsorship service** — it co-signs every x402 Pr
 | **Verify** | `POST sui.hackathon.dpdns.org/verify` | Validates a submitted x402 payment payload |
 | **Settle** | `POST sui.hackathon.dpdns.org/settle` | Executes final on-chain settlement on Sui Testnet |
 
+> [!NOTE]
 > The `/sponsor`, `/verify`, and `/settle` endpoints are called automatically by the DApp Simulator during every x402 transaction. You do not need to call them manually.
 
 ---

@@ -221,7 +221,8 @@ graph LR
 
 ## 6. Hardware-Free Testing: The Aether Simulator
 
->  **IMPORTANT: ALL PRODUCTION SYSTEMS ARE ON SUI MAINNET**
+> [!CAUTION]
+> **ALL PRODUCTION SYSTEMS ARE ON SUI MAINNET**
 > The Aether physical hardware, the production DApp, the x402 payment flow, and the entire [YouTube demonstration video](https://youtu.be/gOZPL1LG8hU) are all running live on **Sui Mainnet**.
 > 
 > However, we understand that reviewing a decentralized hardware project remotely can be difficult. To ensure that judges and developers can experience the complete Aether ecosystem safely and without spending real SUI, we have provided a fully functional **production-grade simulator on Sui Testnet**.
@@ -357,8 +358,8 @@ graph LR
         AetherDApp[Aether DApp]
     end
 
-    SDK[@altaga/x402-sui SDK]
-    Gateway[Aether Gateway API]
+    SDK["@altaga/x402-sui SDK"]
+    Gateway["Aether Gateway API"]
 
     AutoGPT -->|Parses agent-guide.json| SDK
     Custom -->|Parses agent-guide.json| SDK
